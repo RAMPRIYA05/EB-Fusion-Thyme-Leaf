@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="xml:land">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+<style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        
+       .navbar-nav {
+    background-color: peachpuff;
+    padding: 10px;
+}
+
+.logo {
+    max-width: 60px;
+    vertical-align: middle;
+}
+.navbar-nav p,img{
+          display:inline;
+          
+}
+
+.navbar-nav p {
+    color: brown;
+    font-size:40px;
+   
+    font-weight: 100;
+    padding-left: 20px;
+    font-style: italic;
+    margin-left:100px;
+    vertical-align: middle;
+}
+
+.navbar {
+    background-color:brown;
+    color:white;
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.navbar li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+    
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    color: white;
+   
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: brown;
+    min-width: 160px;
+    font-size: 14px; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1; 
+    color: black; 
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color:white;
+}
+       
+
+table{
+	background-color:peachpuff;
+	border-collapse: collapse;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ddd;
+	margin-left:260px;
+	margin-right:10px;
+}
+
+table thead {
+        background-color: brown;
+        color: white;
+        
+    }
+table th, table td {
+        padding: 7px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+     table tr:nth-child(even) {
+        background-color:white;
+    
+    }
+      .table-image {
+    max-width: 100px; 
+    max-height: 100px; 
+}
+
+h2{
+margin-top:30px;
+margin-left:500px;
+}
+
+.navbar li a.active {
+	color: white;
+	text-decoration: underline;
+}
+
+.navbar li a.active:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+ </style>
+    
+
+
+</head>
+<body>
+     
+      <header>
+    <nav class="navbar-nav">
+        <img class="logo" src="ebLogo.jpg" alt="Logo">
+        <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
+    </nav>
+    <nav class="navbar">
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/About}">About Us</a></li>
+            <li><a th:href="@{/contact}">Contact Us</a></li>
+
+            <li>
+                <div class="dropdown">
+                    <a>Bill</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/readPaidBill}">Paid Bill</a>
+                        <a th:href="@{/readParticularBill}">UnPaid Bill</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dropdown">
+                    <a>Connection</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{ApplyNewConnection}">Apply For New Connection</a>
+                        <a th:href="@{/readAppliedConnection}">New Connection Request Pending</a>
+                        <a th:href="@{/approvedConnection}">Authorized Connection</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dropdown">
+                    <a th:class="active">Complaint</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/viewPendingComplaint}">Pending Complaint</a>
+                        <a th:href="@{/viewRectifiedComplaint}">Rectified Complaint</a>
+                    </div>
+                </div>
+            </li>
+            <li><a th:href="@{/viewPaidStatus}">Payment History</a></li>
+            <li><a th:href="@{/UserProfile}">Profile</a></li>
+            <li><a style="margin-left: 180px;" href="logOut">LogOut</a></li>
+        </ul>
+    </nav>
+</header>
+
+<table border="1">
+    <h2>Pending Complaint</h2>
+    <thead>
+    <tr>
+        <th>Complaint Id</th>
+        <th>Email Id</th>
+        <th>Service Number</th>
+        <th>Description</th>
+        <th>Complaint Status</th>
+    </tr>
+    </thead>
+    <tbody>
+  
+    <tr th:each="complaint : ${list}">
+        <td th:text="${complaint.complaintId}">Complaint Id</td>
+        <td th:text="${complaint.emailId}">Email Id</td>
+        <td th:text="${complaint.serviceNumber}">Service Number</td>
+        <td th:text="${complaint.description}">Description</td>
+        <td th:text="${complaint.complaintStatus}">Complaint Status</td>
+    </tr>
+   
+    <tr th:if="${#lists.isEmpty(list)}">
+        <td colspan="5">No records found.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

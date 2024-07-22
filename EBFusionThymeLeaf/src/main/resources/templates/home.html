@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="icon" th:href="@{/ebLogo.jpg}" type="image/x-icon">
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-repeat: no-repeat;
+	background-image: url(adminHomeImage.jpg);
+	background-attachment: fixed;
+	background-size: cover;
+}
+
+.logo {
+	size: 30px;
+	height: 60px;
+}
+
+nav {
+	background-color: brown;
+	opacity: 0.9;
+	width: 1250px;
+	padding: 10px;
+}
+
+.logo, ul, li, p {
+	display: inline;
+}
+
+li {
+	padding-left: 15px;
+	cursor: pointer;
+}
+
+ul {
+	margin-left: 40%;
+	padding-left: 5px;
+}
+
+a {
+	color: gold;
+	text-decoration: none;
+}
+</style>
+
+</head>
+<body>
+    
+      <header>
+            <nav>
+                <img class="logo" th:src="@{/ebLogo.jpg}" alt="Logo">
+               <p style="color:white;font-size:300%;font-weight: 100;padding-left:100px; font-style:italic;">EB FUSION EB SERVICES AND ITS PAYMENT</p>
+			<ul>
+				<li><a class="buttons-atag active" th:href="@{/}">Home</a></li>
+				<li><a th:href="@{/about}">About Us</a></li>
+				<li><a th:href="@{/contact}">Contact Us</a></li>
+				<li><a th:href="@{/LogIn}">SignIn</a></li>
+				<li><a th:href="@{/UserRegistration}">SignUp</a></li>
+			</ul>
+		</nav>
+        </header> 
+</body>
+</html>
