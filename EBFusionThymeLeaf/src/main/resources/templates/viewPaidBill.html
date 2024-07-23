@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="xml:land">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -18,7 +18,6 @@
 
 .logo {
 	max-width: 60px;
-
 	vertical-align: middle;
 }
 
@@ -154,7 +153,7 @@ h2 {
 </head>
 <body>
    <header>
-    <nav class="navbar-nav">
+     <nav class="navbar-nav">
         <img class="logo" src="ebLogo.jpg" alt="Logo">
         <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
     </nav>
@@ -165,7 +164,7 @@ h2 {
             <li><a th:href="@{/contact}">Contact Us</a></li>
            
             <li class="dropdown">
-                <a>Bill</a>
+                <a class=active>Bill</a>
                 <div class="dropdown-content">
                     <a th:href="@{/readPaidBill}">Paid Bill</a>
                     <a th:href="@{/readParticularBill}">UnPaid Bill</a>
@@ -189,69 +188,78 @@ h2 {
                 </div>
             </li>
             
-            <li><a th:href="@{/viewPaidStatus}" th:class="active">Payment History</a></li>
+            <li><a th:href="@{/viewPaidStatus}">Payment History</a></li>
             <li><a th:href="@{/UserProfile}">Profile</a></li>
             <li><a style="margin-left: 100px;" th:href="@{/logOut}">LogOut</a></li>
         </ul>
     </nav>
-</header>
+      </header> 
 
-<h2>Payment History</h2>
+
+
+<h2>Paid Bills</h2>
 <table border="1">
-    <thead>
-        <tr>
-            <th>Payment ID</th>
-            <th>Service Number</th>
-            <th>Account Number</th>
-            <th>Payment Date</th>
-            <th>Total Amount</th>
-            <th>Paid Status</th>
-            <th>Print Receipt</th>
-        </tr>
-    </thead>
-    <tbody>
-      
-        <tr th:each="obj : ${list}">
-            <td th:text="${obj.paymentId}"></td>
-            <td th:text="${obj.serviceNumber}"></td>
-            <td th:text="${obj.accountNumber}"></td>
-            <td th:text="${obj.paymentDate}"></td>
-            <td th:text="${obj.totalAmount}"></td>
-            <td th:text="${obj.payedStatus}"></td>
-            <td>
-                
-                <button th:onclick="generatePaymentReceipt(
-                    [[${obj.paymentId}]],
-                    [[${obj.serviceNumber}]],
-                    [[${obj.paymentDate}]],
-                    [[${obj.totalAmount}]],
-                    [[${obj.accountNumber}]]
-                   
-                )">
-                    Print Receipt
-                </button>
-            </td>
-        </tr>
-
-        
-        <tr th:if="${#lists.isEmpty(list)}">
-            <td colspan="7">No records found.</td>
-        </tr>
-    </tbody>
-</table>
-
+        <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>EmailId</th>
+                <th>Service Number</th>
+                <th>Bill Month</th>
+                <th>Amount</th>
+                <th>Account Number</th>
+                <th>Payment Date</th>
+                <th>Total Amount</th>
+                <th>Paid Amount</th>
+                <th>Paid Status</th>
+                <th>Print Receipt</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr th:each="obj : ${list}">
+                <td th:text="${obj.paymentId}"></td>
+                <td th:text="${obj.emailId}"></td>
+                <td th:text="${obj.serviceNumber}"></td>
+                <td th:text="${readingTakenDate}"></td>
+                <td th:text="${obj.amount}"></td>
+                <td th:text="${obj.accountNumber}"></td>
+                <td th:text="${obj.paymentDate}"></td>
+                <td th:text="${obj.totalAmount}"></td>
+                <td th:text="${obj.payedAmount}"></td>
+                <td th:text="${obj.payedStatus}"></td>
+               <td>
+    <button th:onclick="generatePaymentReceipt(
+                    [[${obj.paymentId}]], 
+                    [[${obj.serviceNumber}]], 
+                     [[${readingTakenDate}]], 
+                    [[${obj.paymentDate}]], 
+                    [[${obj.amount}]], 
+                    [[${obj.accountNumber}]], 
+                    [[${obj.payedAmount}]], 
+                    [[${obj.totalAmount}]])">
+        Print Receipt
+    </button>
+</td>
+            </tr>
+          
+            <tr th:if="${#lists.isEmpty(list)}">
+                <td colspan="11">No records found.</td>
+            </tr>
+        </tbody>
+    </table>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 
-<script th:inline="javascript">
-    function generatePaymentReceipt(paymentId, serviceNumber, paymentDate, totalAmount, accountNumber, payAmount) {
+<script>
+    function generatePaymentReceipt(paymentId, serviceNumber,readingTakenDate, paymentDate, amount, accountNumber,payAmount, totalAmount)
+    {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         doc.setFont("helvetica");
         doc.setFontSize(18);
-
-        const logoSrc = 'ebLogo.jpg';
+        
+        const logoSrc = 'ebLogo.jpg'; 
         const companyName = 'EB FUSION EB SERVICES AND ITS PAYMENT';
-
+        
         doc.addImage(logoSrc, 'JPEG', 10, 10, 30, 30);
         doc.text(companyName, 50, 25);
         doc.setFontSize(16);
@@ -259,14 +267,16 @@ h2 {
         doc.setFontSize(12);
         doc.text("Payment Receipt Number: " + paymentId, 10, 50);
         doc.text("Service Number: " + serviceNumber, 10, 60);
-        doc.text("Account Number: " + accountNumber, 10, 70);
-        doc.text("Payment Date: " + paymentDate, 10, 80);
-        doc.text("Bill Amount: " + totalAmount, 10, 90);
+        doc.text("Bill Month: " + readingTakenDate, 10, 70)
+        doc.text("Payment Date: " + paymentDate, 10, 80)
+        doc.text("Electricity Bill: " + amount, 10, 90);       
+        doc.text("Account Number: " + accountNumber, 10, 100);
+        doc.text("Electricity Bill+Penalty: " + payAmount, 10, 110);       
+        doc.text("Total Amount: " + totalAmount, 10, 120);
        
-
-        doc.save("paymentHistory_" + serviceNumber + ".pdf");
+        doc.save("receipt_" + serviceNumber + ".pdf");
     }
 </script>
-
+        
 </body>
 </html>

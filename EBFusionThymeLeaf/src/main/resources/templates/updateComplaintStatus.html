@@ -6,54 +6,161 @@
 
 <link rel="icon" type="image/x-icon" href="ebLogo.jpg">
 <style>
-         * {
-	margin:0;
-	padding:0;
-}
-
-nav {
-	background-color: brown;
-	opacity:0.9;
-	width:1250px;
-	padding:15px;
-}
-
-.logo, ul, li, p {
-	display:inline;
-}
-
-li{
-	padding-left:15px;
-	cursor:pointer;
-}
-
-ul{
-	margin-left:40%;
-	padding-left:5px;
-}
-
-
-
-.logo{
-	size:30px;
-	height:60px;
-}
-
-a{
-	color:gold;
-	text-decoration:none;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 form{
-  margin-left:500px;
-  padding:20px;
+ 
+    width: 20%;
+    margin: 0 auto;
+    background-color:peachpuff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top:130px;
 }
-table{
-	background-color:peachpuff;
-	margin-top:60px;
-	margin-left:250px;
-	margin-right:5px;
+input[type="number"],select
+{
+    width:100%;
+    padding:7px;
+    margin-bottom:10px;
+    border:1px solid gainsboro;
+    border-radius:5px; 
+}
+body{
+    
+    font-family:'Times New Roman', Times, serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+   
+}
+button{
+ 
+    background-color:brown;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left:60px;
+}
+
+button:hover{
+    background-color:green;
+}
+
+.navbar-nav {
+	background-color: peachpuff;
+	padding: 10px;
+}
+
+.logo {
+	max-width: 60px;
+	vertical-align: middle;
+}
+
+.navbar-nav p, img {
+	display: inline;
+}
+
+.navbar-nav p {
+	color: brown;
+	font-size: 40px;
+	font-weight: 100;
+	padding-left: 20px;
+	font-style: italic;
+	margin-left: 100px;
+	vertical-align: middle;
+}
+
+.navbar {
+	background-color: brown;
+	color: white;
+	padding: 10px;
+}
+
+.navbar ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.navbar li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.navbar li a {
+	color: white;
+	text-decoration: none;
+	padding: 10px 20px;
+}
+
+.navbar li a:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.navbar li a[href="logOut"] {
+	margin-left: 520px;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+	color: white;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: brown;
+	min-width: 160px;
+	font-size: 14px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.dropdown-content a {
+	color: black;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover {
+	background-color: #f1f1f1;
+	color: black;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown:hover .dropbtn {
+	background-color: white;
+}
+
+h2 {
+	 text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+.navbar li a.active {
+	color: white;
+	text-decoration: underline;
+}
+
+.navbar li a.active:hover {
+	background-color: #ddd;
+	color: black;
 }
 </style>
+
+
 
 
 <script>
@@ -72,30 +179,56 @@ function validateForm() {
 
 </head>
 <body>
- <nav>
-                <img class="logo" src="ebLogo.jpg" alt="Logo">
-               <p style="color:white;font-size:300%;font-weight: 100;padding-left:100px; font-style:italic;">RP EB SERVICES AND ITS PAYMENT</p>
-                <ul> 
-                    <li><a href="">Home</a></li>
-                    <li><a href="about.jsp">About Us</a></li>
-                    <li><a href="">Contact Us</a></li>
-                    <li><a href="logOut">LogOut</a></li>
-                   
-                </ul>
-            </nav>
+ <header>
+		<nav class="navbar-nav">
+			<img class="logo" th:src="@{/ebLogo.jpg}" alt="Logo">
+			<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
+		</nav>
+		<nav class="navbar">
+			<ul>
+				<li><a th:href="@{/AdminWelcomePage}">Home</a></li>
+				<li><a th:href="@{/AdminAbout}">About Us</a></li>
+				<li><a th:href="@{/Contact}">Contact Us</a></li>
+				<li><a th:href="@{/listOfUsers}">Registered Customer</a></li>
+				<li class="dropdown"><a>Bill</a>
+					<div class="dropdown-content">
+						<a th:href="@{/adminViewPaidStatus}">Paid Bill</a> <a
+							th:href="@{/readAllBill}">UnPaid Bill</a>
+					</div></li>
+				<li class="dropdown"><a>Connection</a>
+					<div class="dropdown-content">
+						<a th:href="@{/readAllConnection}">New Connection Applied
+							Customer</a> <a th:href="@{/allApprovedConnection}">Approved
+							Customer Connection</a>
+					</div></li>
+				<li class="dropdown"><a class="active">Complaint</a>
+					<div class="dropdown-content">
+						<a th:href="@{/adminViewComplaint}">Pending Complaint</a> <a
+							th:href="@{/rectifiedComplaint}">Rectified Complaint</a>
+					</div></li>
+				<li><a th:href="@{/AdminProfile}">Profile</a></li>
+				<li><a style="margin-left: 100px;" th:href="@{/logOut}">LogOut</a></li>
+			</ul>
+		</nav>
+	</header>
 
- <fieldset>
-        <form action="@{/updateComplaint}" method="get" onsubmit="return validateForm()">
-            <br><label for="complaintStatus">Complaint Status:</label><br>
+	
+
+ 
+        <form th:action="@{/updateComplaint}" method="get" onsubmit="return validateForm()">
+        <h2>Update Complaint</h2>
+        <label for="complaintId">Complaint Id:</label>
+         <input type="number" id="complaintId" name="complaintId" th:value="${param.complaintId}" readonly>
+            <br><label for="complaintStatus">Complaint Status:</label>
             <select id="complaintStatus" name="complaintStatus">
                 <option value="applied">Applied</option>
                 <option value="processed">Processed</option>
                 <option value="rectified">Rectified</option>
             </select><br>
 
-            <input type="hidden" name="complaintId" th:value="${param.editComplaintId}">
-            <input type="submit" style="margin-top: 5px" name="update" value="Update">
+           
+            <button type="submit">Update</button>
         </form>
-    </fieldset>
+    
 </body>
 </html>

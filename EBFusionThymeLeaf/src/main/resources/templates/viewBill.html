@@ -164,8 +164,8 @@ h2 {
     </nav>
     <nav class="navbar">
         <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/about.jsp}">About Us</a></li>
+            <li><a th:href="@{/UserWelcomePage}">Home</a></li>
+            <li><a th:href="@{/About}">About Us</a></li>
             <li><a th:href="@{/contact}">Contact Us</a></li>
            
             <li class="dropdown">
@@ -200,7 +200,7 @@ h2 {
     </nav>
 </header>
 
-<form>
+
     <h2 style="margin-left: 450px;">Customer Bill Details</h2>
     <table border="1">
         <thead>
@@ -219,17 +219,30 @@ h2 {
         </thead>
         <tbody>
           
-            <tr th:each="obj : ${list}">
-                <td th:text="${obj.emailId}"></td>
-                <td th:text="${obj.serviceNumber}"></td>
-                <td th:text="${obj.address}"></td>
-                <td th:text="${obj.readingUnits}"></td>
-                <td th:text="${obj.readingTakenDate}"></td>
-                <td th:text="${obj.dueDate}"></td>
-                <td th:text="${obj.serviceType}"></td>
-                <td th:text="${obj.amount}"></td>
-                <td th:text="${obj.billStatus}"></td>
-                <td><a style="color: blue;" th:href="@{/paymentForm.jsp(emailId=${obj.emailId},serviceNumber=${obj.serviceNumber},readingTakenDate=${obj.readingTakenDate},amount=${obj.amount},dueDate=${obj.dueDate})}">pay</a></td>
+            <tr th:each="payment : ${list}">
+                <td th:text="${payment.emailId}"></td>
+                <td th:text="${payment.serviceNumber}"></td>
+                <td th:text="${payment.address}"></td>
+                <td th:text="${payment.readingUnits}"></td>
+                <td th:text="${payment.readingTakenDate}"></td>
+                <td th:text="${payment.dueDate}"></td>
+                <td th:text="${payment.serviceType}"></td>
+                <td th:text="${payment.amount}"></td>
+                <td th:text="${payment.billStatus}"></td>
+                <td>
+                
+                <form th:action="@{/PaymentForm}" method="get">	
+						<input type="hidden" name="emailId" th:value="${payment.emailId}">
+						<input type="hidden" name="serviceNumber" th:value="${payment.serviceNumber}">
+						<input type="hidden" name="readingTakenDate" th:value="${payment.readingTakenDate}">
+						<input type="hidden" name="amount" th:value="${payment.amount}">
+						<input type="hidden" name="dueDate" th:value="${payment.dueDate}">
+						<button type="submit">pay</button>
+				</form>
+					
+				</td>
+                
+               
             </tr>
            
             <tr th:if="${#lists.isEmpty(list)}">
@@ -237,7 +250,7 @@ h2 {
             </tr>
         </tbody>
     </table>
-</form>
+
 
 </body>
 </html>

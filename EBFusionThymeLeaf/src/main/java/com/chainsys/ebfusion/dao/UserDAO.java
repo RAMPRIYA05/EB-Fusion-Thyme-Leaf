@@ -56,6 +56,7 @@ public interface UserDAO {
 	public List<Payment> searchPaid(String emailId);
 	public List<Complaint> searchPending(String emailId);
 	List<Complaint> searchRectified(String emailId);
+	public List<Complaint> getComplaintById(int complaintId);
 
 
 }

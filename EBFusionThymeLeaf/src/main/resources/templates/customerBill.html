@@ -17,8 +17,7 @@
 
 .logo {
     max-width: 60px;
-    heigth:20px;
-    
+   
     vertical-align: middle;
 }
 .navbar-nav p,img{
@@ -172,32 +171,32 @@ h4 {
     </nav>
     <nav class="navbar">
         <ul> 
-            <li><a href="">Home</a></li>
-            <li><a href="about.jsp">About Us</a></li>
-            <li><a href="">Contact Us</a></li>
-            <li><a href="listOfUsers">Registered Customer</a></li>
+            <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
+            <li><a th:href="@{/AdminAbout}">About Us</a></li>
+            <li><a th:href="@{/Contact}">Contact Us</a></li>
+            <li><a th:href="@{/listOfUsers}">Registered Customer</a></li>
             <li class="dropdown">
                 <a class="active">Bill</a>
                 <div class="dropdown-content">
-                    <a href="/adminViewPaidStatus">Paid Bill</a>
-                    <a href="/readAllBill">UnPaid Bill</a>
+                    <a th:href="@{/adminViewPaidStatus}">Paid Bill</a>
+                    <a th:href="@{/readAllBill}">UnPaid Bill</a>
                 </div>
             </li>
             <li class="dropdown">
                 <a>Connection</a>
                 <div class="dropdown-content">
-                    <a href="/readAllConnection">New Connection Applied Customer</a>
-                    <a href="/allApprovedConnection">Approved Customer Connection</a>
+                    <a th:href="@{/readAllConnection}">New Connection Applied Customer</a>
+                    <a th:href="@{/allApprovedConnection}">Approved Customer Connection</a>
                 </div>
             </li>
             <li class="dropdown">
                 <a>Complaint</a>
                 <div class="dropdown-content">
-                    <a href="adminViewComplaint">Pending Complaint</a>
-                    <a href="rectifiedComplaint">Rectified Complaint</a>
+                    <a th:href="@{/adminViewComplaint}">Pending Complaint</a>
+                    <a th:href="@{/rectifiedComplaint}">Rectified Complaint</a>
                 </div>
             </li>
-            <li><a href="adminProfile">Profile</a></li>
+            <li><a th:href="@{/AdminProfile}">Profile</a></li>
             <li><a style="margin-left: 120px;" href="logOut">LogOut</a></li>
         </ul>
     </nav>

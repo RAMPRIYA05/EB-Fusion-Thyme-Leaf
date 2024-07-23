@@ -12,22 +12,8 @@
             
         }
        
-        button{
-            color:brown;
-            background-color:white;
-            opacity:0.9;
-            padding:2px;
-        }
-        input[type="submit"]
-       {
-            color:brown;
-            background-color:white;
-            opacity:0.9;
-            padding:2px;
-        }
 
-
-.navbar-nav {
+       .navbar-nav {
     background-color: peachpuff;
     padding: 10px;
 }
@@ -76,7 +62,7 @@
 }
 
 .navbar li a:hover {
-    background-color: #ddd;
+     background-color: #ddd;
     color: black;
 }
 
@@ -123,6 +109,21 @@
   background-color:white;
 }
     
+       
+        button{
+            color:brown;
+            background-color:white;
+            opacity:0.9;
+            padding:2px;
+        }
+        input[type="submit"]
+       {
+            color:brown;
+            background-color:white;
+            opacity:0.9;
+            padding:2px;
+        }
+
 
 
 
@@ -154,50 +155,46 @@ table th, table td {
 
 h2{
 margin-top:30px;
-margin-left:500px;
+text-align: center;
 }
-
+ 
+ h4{
+margin-top:10px;
+text-align: center;
+}
 
 .navbar li a.active {
     color: white;  
     text-decoration: underline;  
     
 }
+
 .navbar li a.active:hover {
      background-color: #ddd;
     color: black;
 }
-.navbar li a:hover {
-     background-color: #ddd;
-    color: black;
-}
- 
- 
- 
- 
  </style>
     
-
-
 </head>
 <body>
       
    <header>
     <nav class="navbar-nav">
-       		<img class="logo" th:src="@{/ebLogo.jpg}" alt="Logo">
+        <img class="logo" src="ebLogo.jpg" alt="Logo">
         <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
     </nav>
     <nav class="navbar">
-        <ul> 
-            <li><a th:href="@{/UserWelcomePage}">Home</a></li>
-            <li><a th:href="@{/About}">About Us</a></li>
-            <li><a th:href="@{/contact}">Contact Us</a></li>
+        <ul>
+            <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
+            <li><a th:href="@{/AdminAbout}">About Us</a></li>
+            <li><a th:href="@{/Contact}">Contact Us</a></li>
+            <li><a class="active" th:href="@{/listOfUsers}">Registered Customer</a></li>
             <li>
                 <div class="dropdown">
                     <a>Bill</a>
                     <div class="dropdown-content">
-                        <a th:href="@{/readPaidBill}">Paid Bill</a>
-                        <a th:href="@{/readParticularBill}">UnPaid Bill</a>
+                        <a th:href="@{/adminViewPaidStatus}">Paid Bill</a>
+                        <a th:href="@{/readAllBill}">UnPaid Bill</a>
                     </div>
                 </div>
             </li>
@@ -205,9 +202,8 @@ margin-left:500px;
                 <div class="dropdown">
                     <a>Connection</a>
                     <div class="dropdown-content">
-                        <a th:href="@{/ApplyNewConnection}">Apply For New Connection</a>
-                        <a th:href="@{/readAppliedConnection}">New Connection Request Pending</a>
-                        <a th:href="@{/approvedConnection}">Authorized Connection</a>
+                        <a th:href="@{/readAllConnection}">New Connection Applied Customer</a>
+                        <a th:href="@{/allApprovedConnection}">Approved Customer Connection</a>
                     </div>
                 </div>
             </li>
@@ -215,40 +211,41 @@ margin-left:500px;
                 <div class="dropdown">
                     <a>Complaint</a>
                     <div class="dropdown-content">
-                        <a th:href="@{/viewPendingComplaint}">Pending Complaint</a>
-                        <a th:href="@{/viewRectifiedComplaint}">Rectified Complaint</a>
+                        <a th:href="@{/adminViewComplaint}">Pending Complaint</a>
+                        <a th:href="@{/rectifiedComplaint}">Rectified Complaint</a>
                     </div>
                 </div>
             </li>
-            <li><a href="/viewPaidStatus">Payment History</a></li>
-            <li><a class="active" th:href="@{/UserProfile}">Profile</a></li>
-            <li><a style="margin-left: 100px;" href="logOut">LogOut</a></li>
+            <li><a th:href="@{/AdminProfile}">Profile</a></li>
+            <li><a th:href="@{/logOut}" style="margin-left: 100px;">LogOut</a></li>
         </ul>
     </nav>
 </header>
+<h2>Registered Customer</h2>
 
-<h2>User Profile</h2>
+<form action="searchUser" method="get"> 
+    <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" id="emailId" required></h4>
+</form><br>
 
-<table border="1">
+<table>
     <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email Id</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Aadhaar Number</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            <th>Name</th>
+            <th>Email Id</th>
+            <th>Phone Number</th>
+            <th>Aadhaar Number</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>
-        
         <tr th:each="user : ${list}">
             <td th:text="${user.name}"></td>
             <td th:text="${user.emailId}"></td>
             <td th:text="${user.phoneNumber}"></td>
             <td th:text="${user.aadhaarNumber}"></td>
             <td>
-                <form action="UpdateUserProfile">
+                <form th:action="@{/updateCustomerProfile}" method="get">
                     <input type="hidden" name="name" th:value="${user.name}">
                     <input type="hidden" name="emailId" th:value="${user.emailId}">
                     <input type="hidden" name="phoneNumber" th:value="${user.phoneNumber}">
@@ -257,18 +254,16 @@ margin-left:500px;
                 </form>
             </td>
             <td>
-                <form action="/deleteUser" method="get">
+                <form th:action="@{/delete}" method="get">
                     <input type="hidden" name="emailId" th:value="${user.emailId}">
-                    <button type="submit">Delete</button>
+                    <input type="submit" value="Delete">
                 </form>
             </td>
         </tr>
-       
         <tr th:if="${#lists.isEmpty(list)}">
             <td colspan="6">No records found.</td>
         </tr>
     </tbody>
 </table>
-
 </body>
 </html>

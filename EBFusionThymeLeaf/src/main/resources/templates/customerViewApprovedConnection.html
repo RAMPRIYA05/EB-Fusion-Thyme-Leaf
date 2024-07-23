@@ -19,8 +19,6 @@
 
 .logo {
     max-width: 60px;
-    heigth:20px;
-    
     vertical-align: middle;
 }
 .navbar-nav p,img{
@@ -145,15 +143,19 @@ margin-left:500px;
 }
 
 
-.buttons-atag.active{
- 
-    color:white;
-    text-decoration:underline;
+.navbar li a.active {
+    color: white;  
+    text-decoration: underline;  
     
 }
-
- 
- 
+.navbar li a.active:hover {
+     background-color: #ddd;
+    color: black;
+}
+.navbar li a:hover {
+     background-color: #ddd;
+    color: black;
+}
  
  
  </style>
@@ -170,8 +172,8 @@ margin-left:500px;
     </nav>
     <nav class="navbar">
         <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/about}">About Us</a></li>
+            <li><a th:href="@{/UserWelcomePage}">Home</a></li>
+            <li><a th:href="@{/About}">About Us</a></li>
             <li><a th:href="@{/contact}">Contact Us</a></li>
            
             <li class="dropdown">
@@ -200,7 +202,7 @@ margin-left:500px;
             </li>
             
             <li><a th:href="@{/viewPaidStatus}">Payment History</a></li>
-            <li><a th:href="@{/userProfile}">Profile</a></li>
+            <li><a th:href="@{/UserProfile}">Profile</a></li>
             <li><a style="margin-left: 100px;" th:href="@{/logOut}">LogOut</a></li>
         </ul>
     </nav>
@@ -232,14 +234,15 @@ margin-left:500px;
             <td th:text="${obj.state}"></td>
             <td>
                
-                <img class="table-image" th:src="'data:image/jpeg;base64,' + ${#strings.replace(#strings.trim(#strings.new(obj.addressProof).bytes), '\n', '')}" alt="Address Proof">
+                <img class="table-image" 
+                 th:src="'data:image/jpeg;base64,' + ${obj.customerAddressProof}" alt="Address Proof Image">
                 <br>
               
-                <a th:href="@{/addressProof.jpg}" target="_blank"><button>View</button></a>
+                <a href="addressProof.jpg" target="_blank"><button>View</button></a>
             </td>
             <td>
                 
-                <form action="complaintForm.jsp" method="post">
+                <form action="ComplaintForm">
                     <input type="hidden" name="emailId" th:value="${obj.emailId}">
                     <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">
                     <input type="submit" value="Complaint Form">

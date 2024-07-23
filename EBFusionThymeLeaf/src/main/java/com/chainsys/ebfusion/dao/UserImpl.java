@@ -314,8 +314,16 @@ public class UserImpl implements UserDAO {
 				emailId, emailId, emailId, emailId, emailId);
 		return jdbcTemplate.query(search, new ComplaintMapper());
 	}
+
 	
 	
-	
+	@Override
+    public List<Complaint> getComplaintById(int complaintId) {
+        String getId= "SELECT complaint_id,email_id,service_number,description,complaint_status FROM complaint_details WHERE complaint_id = ?";
+      
+        return  jdbcTemplate.query(getId, new ComplaintMapper(),complaintId);
+        
+        
+    }
 	
 }

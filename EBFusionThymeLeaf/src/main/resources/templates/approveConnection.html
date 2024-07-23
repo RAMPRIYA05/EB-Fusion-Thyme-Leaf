@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+
 <style>
 * {
 	margin: 0;
@@ -19,9 +19,7 @@
 }
 
 .logo {
-    max-width: 60px;
-    heigth:20px;
-    
+    max-width: 60px; 
     vertical-align: middle;
 }
 .navbar-nav p,img{
@@ -167,10 +165,10 @@ h4 {
         </nav>
         <nav class="navbar">
             <ul> 
-                <li><a href="#">Home</a></li>
-                <li><a href="about.jsp">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="/listOfUsers">Registered Customer</a></li>
+                <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
+                <li><a th:href="@{/AdminAbout}">About Us</a></li>
+                <li><a th:href="@{/Contact}">Contact Us</a></li>
+                <li><a th:href="@{/listOfUsers}">Registered Customer</a></li>
                 <li>
                     <div class="dropdown">
                         <a>Bill</a>
@@ -198,7 +196,7 @@ h4 {
                         </div>
                     </div>
                 </li>
-                <li><a th:href="@{/adminProfile}">Profile</a></li>
+                <li><a th:href="@{/AdminProfile}">Profile</a></li>
                 <li><a style="margin-left: 130px;" th:href="@{/logOut}">LogOut</a></li>
             </ul>
         </nav>
@@ -206,11 +204,11 @@ h4 {
 
     <h2>Customers applied for new Connection</h2>
 
-    <form action="@{/searchAppliedConnection}" method="get"> 
+    <form action="/searchAppliedConnection" method="get"> 
         <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" id="emailId" required></h4>
     </form><br>
 
-    <form action="@{/customerConnection}" method="get">
+   
         <table>
             <thead>
                 <tr>
@@ -233,21 +231,25 @@ h4 {
                     <td th:text="${obj.district}"></td>
                     <td th:text="${obj.state}"></td>
                     <td>
-                        <form action="@{/customerConnection}">
+                    <form action="/customerConnection" method="get">
+                       
                             <select id="connectionStatus" name="ConnectionStatus">
                                 <option value="" disabled selected>Select your Status</option>
                                 <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>                
                             </select>
                             <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">
+                            
                             <button type="submit">Submit</button>
-                        </form>
+                      
+                      </form>
                     </td>
                    <td>
     <img class="table-image" 
          th:src="'data:image/jpeg;base64,' + ${obj.customerAddressProof}" 
          alt="Address Proof">
     <br>
-    <a href="addressProof.jpg">
+    <a th:href="@{addressProof.jpg}" target="_blank">
         <button>View</button>
     </a>
 </td>
@@ -259,6 +261,6 @@ h4 {
                 </tr>
             </tbody>
         </table>
-    </form>
+
 </body>
 </html>

@@ -44,6 +44,21 @@ public class UserController {
 		return "about";
 	}
 	
+	@RequestMapping("/AdminAbout")
+	public String adminAbout() {
+		return "adminAbout";
+	}
+	
+	@RequestMapping("/AdminWelcomePage")
+	public String adminWelcome() {
+		return "adminWelcomePage";
+	}
+	
+	@RequestMapping("/UserWelcomePage")
+	public String userWelcome() {
+		return "userWelcomePage";
+	}
+	
 	@RequestMapping("/UserRegistration")
 	public String userRegistration() {
 		return "userRegistration";
@@ -154,6 +169,11 @@ public class UserController {
 	  {
 	  return "updateAdminProfile";
 	  }
+	  @GetMapping("/UpdateUserProfile") 
+	  public String updateUserProfile() 
+	  {
+	  return "updateUserProfile";
+	  }
 	
 		
 	@GetMapping("/UpdateAdmin")
@@ -188,7 +208,7 @@ public class UserController {
 		userDAO.delete(user);
 		List<User> list=userDAO.listUsers();
 		model.addAttribute("list",list);
-		return "registerTable.jsp";
+		return "registerTable";
 	}
 	
 	@GetMapping("/updateUser")
@@ -201,7 +221,7 @@ public class UserController {
 		userDAO.update(user);
 		List<User> list=userDAO.getUser(emailId);
 		model.addAttribute("list",list);
-		return "userProfile.jsp";
+		return "userProfile";
 	}
 	
 	@GetMapping("/deleteUser")
@@ -212,7 +232,7 @@ public class UserController {
 		userDAO.delete(user);
 		List<User> list=userDAO.getUser(emailId);
 		model.addAttribute("list",list);
-		return "userProfile.jsp";
+		return "userProfile";
 	}
 	
 	@GetMapping("/searchUser")

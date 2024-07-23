@@ -38,7 +38,19 @@ public class ComplaintController {
 		String email=(String)session.getAttribute("UserEmailId");
 		List<Complaint> list=userDAO.viewComplaint(email);
 		model.addAttribute("list",list);
-		return "customerViewComplaint.jsp";
+		return "customerViewComplaint";
+	}
+	
+	@RequestMapping("/ComplaintForm")
+	public String complaintForm()
+	{
+		return "complaintForm";
+	}
+	
+	
+	@GetMapping("/UpdateComplaintStatus")
+	public String updateComplaintStatus() {
+	    return "updateComplaintStatus";
 	}
 	
 	@GetMapping("/viewPendingComplaint")
@@ -60,8 +72,8 @@ public class ComplaintController {
 	
 	@GetMapping("/updateComplaint")
 	public String updateComplaint(@RequestParam("complaintStatus")String complaintStatus,@RequestParam("complaintId") int complaintId,Model model) {
-		
-		
+		Complaint complaint=new Complaint();
+		complaint.setComplaintId(complaintId);
 		userDAO.updateComplaint(complaintStatus, complaintId);
 		List<Complaint> list=userDAO.viewPendingComplaint();
 		model.addAttribute("list",list);

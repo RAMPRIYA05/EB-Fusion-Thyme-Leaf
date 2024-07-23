@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+<style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            
+        }
+    
+       .navbar-nav {
+    background-color: peachpuff;
+    padding: 10px;
+}
+
+.logo {
+    max-width: 60px;
+    vertical-align: middle;
+}
+.navbar-nav p,img{
+          display:inline;
+          
+}
+
+.navbar-nav p {
+    color: brown;
+    font-size:40px;
+   
+    font-weight: 100;
+    padding-left: 20px;
+    font-style: italic;
+    margin-left:100px;
+    vertical-align: middle;
+}
+
+.navbar {
+    background-color:brown;
+    color:white;
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navbar li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.navbar li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.navbar li a[href="logOut"] {
+    margin-left:520px;
+}
+
+ .dropdown {
+    position: relative;
+    display: inline-block;
+    color: white;
+   
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: brown;
+    min-width: 160px;
+    font-size: 14px; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1; 
+    color: black; 
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color:white;
+}
+       
+
+
+
+table{
+	background-color:peachpuff;
+	border-collapse: collapse;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	border: 1px solid #ddd;
+	margin-left:130px;
+	margin-right:10px;
+}
+
+table thead {
+        background-color: brown;
+        color: white;
+        
+    }
+table th, table td {
+        padding: 7px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+     table tr:nth-child(even) {
+        background-color:white;
+    
+    }
+      .table-image {
+    max-width: 100px; 
+    max-height: 100px; 
+}
+
+h2{
+margin-top:30px;
+text-align: center;
+}
+h4 {
+	margin-top: 31px;
+	text-align: center;
+}
+
+
+.navbar li a.active {
+    color: white;  
+    text-decoration: underline;  
+    
+}
+.navbar li a.active:hover {
+     background-color: #ddd;
+    color: black;
+}
+.navbar li a:hover {
+     background-color: #ddd;
+    color: black;
+}
+
+ 
+ 
+ 
+ 
+ </style>
+    
+
+
+</head>
+<body>
+      
+    <header>
+            <nav class="navbar-nav">
+                <img class="logo" src="ebLogo.jpg" alt="Logo">
+               <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
+                </nav>
+                <nav class="navbar">
+                
+                <ul> 
+                    <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
+                    <li><a th:href="@{/AdminAbout}">About Us</a></li>
+                    <li><a th:href="@{/Contact}">Contact Us</a></li>
+                    <li><a th:href="@{/listOfUsers}">Registered Customer</a></li>
+                 <li>
+					<div class="dropdown">
+						<a>Bill</a>
+						<div class="dropdown-content">
+							<a th:href="@{/adminViewPaidStatus}">Paid Bill
+								</a> <a th:href="@{/readAllBill}">UnPaid Bill
+								</a>
+
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="dropdown">
+						<a class="active">Connection</a>
+						<div class="dropdown-content">
+
+							<a th:href="@{/readAllConnection}">New Connection
+								Applied Customer</a> <a th:href="@{/allApprovedConnection}">Approved
+								Customer Connection</a>
+
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="dropdown">
+						<a>Complaint</a>
+						<div class="dropdown-content">
+
+							<a th:href="@{/adminViewComplaint}">Pending Complaint</a> <a
+								th:href="@{/rectifiedComplaint}">Rectified Complaint</a>
+
+						</div>
+					</div>
+				</li>
+                    
+                    
+               <li> <a th:href="@{/AdminProfile}">Profile</a></li>
+                
+                <li><a style="margin-left: 100px;" th:href="@{/logOut}">LogOut</a></li>
+                </ul>
+            </nav>
+        </header> 
+<h2>Customer Connection Details</h2>
+
+    <form action="/searchConnection" method="get"> 
+        <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" required></h4>
+       
+    </form>
+
+    <br>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th scope="col">Email Id</th>
+                <th scope="col">Service Number</th>
+                <th scope="col">Service Type</th>
+                <th scope="col">Address</th>
+                <th scope="col">District</th>
+                <th scope="col">State</th>
+                <th scope="col">Address Proof</th>
+                <th scope="col">Enter Bill Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <tr th:each="obj : ${list}">
+                <td th:text="${obj.emailId}"></td>
+                <td th:text="${obj.serviceNumber}"></td>
+                <td th:text="${obj.serviceType}"></td>
+                <td th:text="${obj.address}"></td>
+                <td th:text="${obj.district}"></td>
+                <td th:text="${obj.state}"></td>
+                <td>
+                    
+                    <img class="table-image"
+                     th:src="'data:image/jpeg;base64,' + ${obj.customerAddressProof}" alt="Address Proof Image">
+                    <br>
+                    <a href="addressProof.jpg"><button>View</button></a>
+                </td>
+                <td>
+                   
+                    <form action="/BillForm">
+                        <input type="hidden" name="emailId" th:value="${obj.emailId}">
+                        <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">
+                        <input type="hidden" name="address" th:value="${obj.address}">
+                        <input type="hidden" name="serviceType" th:value="${obj.serviceType}">
+                        
+                       
+                       <!--  <button th:if="${obj.billEnteredDate == null or #temporaldifference(obj.billEnteredDate, obj.readingTakenDate) gt 60}" type="submit">Enter Customer Bill</button>
+                        <button th:if="${obj.billEnteredDate != null and #temporaldifference(obj.billEnteredDate, obj.readingTakenDate) le 60}" type="button" disabled>Enter Customer Bill</button> -->
+                   
+                   
+                <!--  <th:block th:with="currentDate=${T(java.time.LocalDate).now()}, 
+                                            readingTakenDate=${T(java.time.LocalDate).parse(obj.readingTakenDate)}, 
+                                            difference=${T(java.time.temporal.ChronoUnit).DAYS.between(readingTakenDate, currentDate)}">
+                           
+                            <button th:if="${obj.billEnteredDate == null and difference ge 60}" type="submit">Enter Customer Bill</button>
+                            <button th:if="${obj.billEnteredDate != null or difference lt 60}" type="button" disabled>Bill Entered</button>
+                        </th:block>  -->
+                   
+                   
+                    <button type="submit">Enter Customer Bill</button>  
+                    </form>
+                </td>
+            </tr>
+           
+            <tr th:if="${#lists.isEmpty(list)}">
+                <td colspan="8">No records found.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

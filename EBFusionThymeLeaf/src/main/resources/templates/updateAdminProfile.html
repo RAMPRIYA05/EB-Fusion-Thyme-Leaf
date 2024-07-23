@@ -3,8 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" th:href="@{/ebLogo.jpg}" type="image/x-icon">
-
+<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
 <style>
 body {
     font-family: 'Times New Roman', Times, serif;
@@ -14,8 +13,9 @@ body {
 }
 
 form {
-    width: 50%;
+    width: 20%;
     margin: 0 auto;
+    margin-top:8%;
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -34,9 +34,8 @@ h2 {
 input[type="text"],
 input[type="number"],
 input[type="email"],
-input[type="password"],
 input[type="tel"] {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid gainsboro;
@@ -70,30 +69,38 @@ a:hover {
 
 
 
+
 </head>
 <body>
 
-<form th:action="@{/UserServlet}" method="post" onsubmit="return validation()">
-    <fieldset>
-        <h2>Registration</h2>
-        Name:<input type="text" placeholder="Enter your name" name="name" id="name" pattern="^[A-Za-z]+$" required><br>
-        <br>Email Id:<input type="email" placeholder="Enter your EmailId" name="emailId" id="emailId" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+[/.][a-z]{2,}$" required><br>                                                                                                                           
-        <br>Password:<input type="password" placeholder="Enter your Password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" required><br>
-        <br>Phone Number:<input type="tel" placeholder="Enter your Phone Number" name="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" required><br>
-        <br>Aadhaar Number:<input type="text" placeholder="Enter your Aadhaar Number" name="aadhaarNumber" id="aadhaarNumber" pattern="^[2-9][0-9]{3}\s[0-9]{4}\s[0-9]{4}$" required><br>
-        <br><button type="submit">Register</button>
-        
-       <a th:href="@{/LogIn}">or LogIn</a>
 
-    </fieldset>
+<form action="/UpdateAdmin" method="get">
+    <h2>Admin Profile</h2>
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" placeholder="Enter your new name" id="name" name="name" pattern="^[A-Za-z]+$" th:value="${param.name}" required>
+    </div>
+    <div>
+        <label for="emailId">EmailId:</label>
+        <input type="email" id="emailId" name="emailId" th:value="${param.emailId}" readonly>
+    </div>
+    <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" th:value="${param.phoneNumber}" required>
+    </div>
+    <div>
+        <label for="aadhaarNumber">Aadhaar Number:</label>
+        <input type="text" id="aadhaarNumber" name="aadhaarNumber" pattern="^[2-9][0-9]{3}\s[0-9]{4}\s[0-9]{4}$" th:value="${param.aadhaarNumber}" required>
+    </div>
+    
+    <button type="submit" onclick="return validateForm()">Update</button>
 </form>
 
-<script type="text/javascript">
+ <script type="text/javascript">
 
 function validation() {
    var name=document.getElementById("name");
    var emailId=document.getElementById("emailId");
-   var password=document.getElementById("password");
    var phoneNumber = document.getElementById("phoneNumber");
    var aadhaarNumber = document.getElementById("aadhaarNumber");
    
@@ -106,10 +113,7 @@ function validation() {
 	   alert("EmailId must be filled out");
 	   return false;
    }
-   if(!password.checkValidity()){
-	   alert("Password must be in one uppercase,one lowercase,one numbers,one special characters,and length 8");
-	   return false;
-   }
+  
    if (!phoneNumber.checkValidity()) {
        alert("Phone Number must be a 10-digit number.");
        return false;

@@ -54,6 +54,11 @@ public class CustomerController {
 	
         String email=(String)session.getAttribute("UserEmailId");
 		List<Customer> list=userDAO.readApplyConnection(email);
+		for(Customer customer1:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer1.getAddressProof());
+             customer1.setCustomerAddressProof(base64AddressProof);
+		}
 		model.addAttribute("list",list);	
 		  return "applyConnectionTable";
 	        }
@@ -75,6 +80,11 @@ public class CustomerController {
 	{ 		
 		String email=(String)session.getAttribute("UserEmailId");		
 		List<Customer> list=userDAO.readApplyConnection(email);
+		for(Customer customer:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
+             customer.setCustomerAddressProof(base64AddressProof);
+		}
 		model.addAttribute("list",list);
 		return "applyConnectionTable";
 	}
@@ -97,6 +107,11 @@ public class CustomerController {
 	{ 
 		String email=(String)session.getAttribute("UserEmailId");
 		List<Customer> list=userDAO.readApprovedConnection(email);
+		for(Customer customer:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
+             customer.setCustomerAddressProof(base64AddressProof);
+		}
 		model.addAttribute("list",list);
 		return "customerViewApprovedConnection";	
 	}
@@ -105,8 +120,13 @@ public class CustomerController {
 	public String allApprovedConnection(Model model)
 	{ 
 		List<Customer> list=userDAO.allApprovedConnection();
+		for(Customer customer:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
+             customer.setCustomerAddressProof(base64AddressProof);
+		}
 		model.addAttribute("list",list);
-		return "adminViewApprovedConnection.jsp";	
+		return "adminViewApprovedConnection";	
 	}
 		
 	@GetMapping("/customerConnection")
@@ -125,7 +145,7 @@ public class CustomerController {
 	{		
 		List<Customer> list=userDAO.searchConnection(emailId);
 		model.addAttribute("list",list);
-		return "adminViewApprovedConnection.jsp";
+		return "adminViewApprovedConnection";
 	}
 	
 	@GetMapping("/searchAppliedConnection")
@@ -133,7 +153,7 @@ public class CustomerController {
 	{		
 		List<Customer> list=userDAO.searchConnection(emailId);
 		model.addAttribute("list",list);
-		return "approveConnection.jsp";
+		return "approveConnection";
 	}
 	
 }

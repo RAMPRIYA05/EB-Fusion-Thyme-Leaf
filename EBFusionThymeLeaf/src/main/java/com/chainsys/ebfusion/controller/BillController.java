@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -46,7 +47,7 @@ public class BillController {
 		List<Bill> list=userDAO.viewBill();
 		model.addAttribute("list",list);
 		
-		return "customerBill.jsp";
+		return "customerBill";
 		
 	}
 	
@@ -59,7 +60,11 @@ public class BillController {
 	}
 	
 	
-	
+	@RequestMapping("/BillForm")
+	public String billForm(HttpSession session) {
+		String email=(String)session.getAttribute("UserEmailId");	
+		return "billForm";
+	}
 	@GetMapping("/readParticularBill")
 	public String readParticularBill(Model model,HttpSession session)
 	{ 		

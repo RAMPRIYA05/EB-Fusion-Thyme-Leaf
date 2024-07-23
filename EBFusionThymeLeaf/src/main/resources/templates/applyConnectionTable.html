@@ -166,11 +166,18 @@ margin-left:500px;
 
 
 
-.buttons-atag.active{
- 
-    color:white;
-    text-decoration:underline;
+.navbar li a.active {
+    color: white;  
+    text-decoration: underline;  
     
+}
+.navbar li a.active:hover {
+     background-color: #ddd;
+    color: black;
+}
+.navbar li a:hover {
+     background-color: #ddd;
+    color: black;
 }
 
  
@@ -191,9 +198,9 @@ margin-left:500px;
     </nav>
     <nav class="navbar">
         <ul>
-            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/UserWelcomePage}">Home</a></li>
             <li><a th:href="@{/About}">About Us</a></li>
-            <li><a th:href="@{/Contact}">Contact Us</a></li>
+            <li><a th:href="@{/contact}">Contact Us</a></li>
            
             <li class="dropdown">
                 <a>Bill</a>
@@ -204,7 +211,7 @@ margin-left:500px;
             </li>
             
             <li class="dropdown">
-                <a>Connection</a>
+                <a class="active">Connection</a>
                 <div class="dropdown-content">
                     <a th:href="@{/ApplyNewConnection}">Apply For New Connection</a>
                     <a th:href="@{/readAppliedConnection}">New Connection Request Pending</a>
@@ -221,7 +228,7 @@ margin-left:500px;
             </li>
             
             <li><a th:href="@{/viewPaidStatus}">Payment History</a></li>
-            <li><a th:href="@{/userProfile}">Profile</a></li>
+            <li><a th:href="@{/UserProfile}">Profile</a></li>
             <li><a style="margin-left: 100px;" th:href="@{/logOut}">LogOut</a></li>
         </ul>
     </nav>
@@ -242,7 +249,7 @@ margin-left:500px;
         </tr>
     </thead>
     <tbody>
-        <!-- Thymeleaf iteration through list -->
+       
         <tr th:each="obj : ${list}">
             <td th:text="${obj.emailId}"></td>
             <td th:text="${obj.serviceNumber}"></td>
@@ -252,20 +259,20 @@ margin-left:500px;
             <td th:text="${obj.state}"></td>
             <td th:text="${obj.connectionStatus}"></td>
             <td>
-                <!-- Display address proof image -->
-                <img class="table-image" th:src="'data:image/jpeg;base64,' + ${#strings.replace(#strings.trim(#strings.new(obj.addressProof).bytes), '\n', '')}" alt="Address Proof">
+              
+                <img class="table-image" th:src="'data:image/jpeg;base64,' + ${obj.customerAddressProof}" alt="Address Proof">
                 <br>
-                <!-- Link to view full-size image -->
-                <a th:href="@{/addressProof.jpg}" target="_blank"><button>View</button></a>
+               
+                <a href="addressProof.jpg"><button>View</button></a>
             </td>
         </tr>
-        <!-- Handle case where list is empty -->
+       
         <tr th:if="${#lists.isEmpty(list)}">
             <td colspan="8">No records found.</td>
         </tr>
     </tbody>
 </table>
 
-<!-- Add your JavaScript and additional scripts here if needed -->
+
 </body>
 </html>
