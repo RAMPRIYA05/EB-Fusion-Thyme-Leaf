@@ -3,7 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+<link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
+<script src="/javascript/complaintForm.js"></script>
 <style>
 form {
 	background-color: peachpuff;
@@ -41,25 +42,6 @@ button:hover {
 	background-color: green;
 }
 </style>
-
-<script>
-	function validateForm() {
-
-		var description = document.getElementById("description");
-		var complaintStatus = document.getElementById("complaintStatus");
-		if (!description.checkValidity()) {
-			alert("Description must be filled out");
-			return false;
-		}
-		if (!complaintStatus.checkValidity()) {
-			alert("Complaint Status must be filled out");
-			return false;
-		}
-
-		return true;
-	}
-</script>
-
 </head>
 <body>
 <form action="/applyComplaint" method="get">
@@ -85,7 +67,7 @@ button:hover {
                 </select>
             </div>
             <br>
-            <button type="submit">Submit</button>
+            <button type="submit" onclick="validateForm()">Submit</button>
         </fieldset>
     </form>
 </body>

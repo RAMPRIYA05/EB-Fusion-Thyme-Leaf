@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -6,105 +5,107 @@
 <title>Insert title here</title>
 <link rel="icon" type="image/x-icon" href="ebLogo.jpg">
 <style>
-
-       .navbar-nav {
-    background-color: peachpuff;
-    padding: 10px;
+.navbar-nav {
+	background-color: peachpuff;
+	padding: 10px;
 }
 
 .logo {
-    max-width: 60px;
-    heigth:20px;
-    
-    vertical-align: middle;
+	max-width: 60px;
+	vertical-align: middle;
 }
-.navbar-nav p,img{
-          display:inline;
-          
+
+.navbar-nav p, img {
+	display: inline;
 }
 
 .navbar-nav p {
-    color: brown;
-    font-size:40px;
-   
-    font-weight: 100;
-    padding-left: 20px;
-    font-style: italic;
-    margin-left:100px;
-    vertical-align: middle;
+	color: brown;
+	font-size: 40px;
+	font-weight: 100;
+	padding-left: 20px;
+	font-style: italic;
+	margin-left: 100px;
+	vertical-align: middle;
 }
 
 .navbar {
-    background-color:brown;
-    color:white;
-    padding: 10px;
+	background-color: brown;
+	color: white;
+	padding: 10px;
 }
 
 .navbar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .navbar li {
-    display: inline-block;
-    margin-right: 10px;
+	display: inline-block;
+	margin-right: 10px;
 }
 
 .navbar li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
+	color: white;
+	text-decoration: none;
+	padding: 10px 20px;
 }
 
 .navbar li a:hover {
-    background-color: #ddd;
-    color: black;
+	background-color: #ddd;
+	color: black;
 }
 
 .navbar li a[href="logOut"] {
-    margin-left:520px;
+	margin-left: 520px;
 }
 
- 
-.p{
-     display:inline;       
+.p {
+	display: inline;
 }
 
 .navbar li a.active {
-    color: white;  
-    text-decoration: underline;  
-    
-}
-.navbar li a.active:hover {
-     background-color: #ddd;
-    color: black;
+	color: white;
+	text-decoration: underline;
 }
 
+.navbar li a.active:hover {
+	background-color: #ddd;
+	color: black;
+}
 </style>
 
 </head>
 <body>
 
-<header>
-    <nav class="navbar-nav">
-        <img class="logo" th:src="@{/ebLogo.jpg}" alt="Logo">
-        <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
-    </nav>
-    <nav class="navbar">
-        <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a class="active" th:href="@{/About}">About Us</a></li>
-            <li><a th:href="@{/contact}">Contact Us</a></li>
-            <li><a th:href="@{/logout}" style="margin-left: 750px;">LogOut</a></li>
-        </ul>
-    </nav>
-</header>
+	<header>
+		<nav class="navbar-nav">
+			<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
+			<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
+		</nav>
+		<nav class="navbar">
+			<ul>
+				<li><a th:href="@{/UserWelcomePage}">Home</a></li>
+				<li><a class="active" th:href="@{/About}">About Us</a></li>
+				<li><a th:href="@{/contact}">Contact Us</a></li>
+				<li><a th:href="@{/logout}" style="margin-left: 750px;">LogOut</a></li>
+			</ul>
+		</nav>
+	</header>
 
-<h1 th:text="${title}" style="margin-left: 550px;">About</h1>
-<p style="margin: 20px; text-align: justify;">
-    The electricity bill serves as a record of energy usage and provides important information for consumers to manage their energy consumption and expenses. It also serves as a means for utility companies to collect payments for the electricity provided to homes, businesses, and other establishments. In recent years, there has been increasing emphasis on energy conservation and sustainability, leading to efforts to promote energy-efficient practices and technologies to reduce electricity consumption and lower bills. Additionally, some regions offer incentives or rebates for adopting renewable energy sources such as solar or wind power, which can further influence electricity bills.
-</p>
+	<h1 th:text="${title}" style="margin-left: 550px;">About</h1>
+	<p style="margin: 20px; text-align: justify;">The electricity bill
+		serves as a record of energy usage and provides important information
+		for consumers to manage their energy consumption and expenses. It also
+		serves as a means for utility companies to collect payments for the
+		electricity provided to homes, businesses, and other establishments.
+		In recent years, there has been increasing emphasis on energy
+		conservation and sustainability, leading to efforts to promote
+		energy-efficient practices and technologies to reduce electricity
+		consumption and lower bills. Additionally, some regions offer
+		incentives or rebates for adopting renewable energy sources such as
+		solar or wind power, which can further influence electricity bills.</p>
 
 </body>
 </html>

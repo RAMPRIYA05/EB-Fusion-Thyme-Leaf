@@ -3,7 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+<link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
+<script src="/javascript/paymentForm.js"></script>
 <style>
 
 form {
@@ -11,7 +12,6 @@ form {
   width:500px;
   margin:auto;
 }
-
 
 fieldset {
   border:white;
@@ -63,57 +63,11 @@ button:hover {
         <br>
         Total Amount: <input type="number" id="totalAmount" name="totalAmount" readonly><br>
         <br>
-        Payed amount: <input type="number" id="payedAmount" name="payedAmount" required><br>
-        <input type="hidden" name="readingTakenDate" th:value="${readingTakenDate}">
+        Penalty: <input type="number" id="payedAmount" name="payedAmount" readonly><br>
+        <input type="hidden" name="readingTakenDate" th:value="${param.readingTakenDate}">
         <br>
-        <button type="submit">Submit</button>
+        <button type="submit" onclick="validate()">Submit</button>
     </form>
-	
-	<script>
-        function calculateTotalAmount() {
-            var dueDate = new Date(document.getElementById("dueDate").value);
-            var paymentDate = new Date(document.getElementById("paymentDate").value);
-            var amount = parseFloat(document.getElementById("amount").value);
-            var paymentDate = new Date(); 
-            var days= Math.floor((paymentDate - dueDate) / (1000 * 60 * 60 * 24)); 
-            var penalty=0;
-            if(days<= 0) {
-                penalty=0;
-            } else if(days>0 && days<=10) {
-                penalty=days*10;
-            } else if(days>10 && days<=15) {
-                penalty=days* 20;
-            } else if(days>15 && days<=25) {
-                penalty=days*30;
-            } else {
-                penalty = NaN; 
-            }
-
-            var totalAmount=amount+penalty;
-            document.getElementById("totalAmount").value = totalAmount.toFixed(2); 
-            }
-        
-        
-        
-        function validate() {
-            var accountNumber = document.getElementById("accountNumber").value;
-            var payedAmount = document.getElementById("payedAmount").value;
-
-           
-            if (!/^[0-9]{9,18}$/.test(accountNumber)) {
-                alert("Account number must be numeric and between 9 to 18 digits");
-                return false;
-            }
-
-           
-            if (isNaN(parseFloat(payedAmount)) || parseFloat(payedAmount) < 0) {
-                alert("Payed Amount must be numeric and non-negative");
-                return false;
-            }
-
-            return true;
-        }
-    </script>
 	
 </body>
 </html>

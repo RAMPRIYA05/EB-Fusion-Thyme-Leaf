@@ -95,47 +95,37 @@ public class UserController {
 	
 	
 	@PostMapping("/Login")
-    public String login(@RequestParam("emailId") String emailId, @RequestParam("password") String password,HttpSession session)
-    {		
-        try
-        {
-            if(emailId.equals("ram5@eb.com"))
-            {
-                if(password.equals(userDAO.getPassword(emailId)))
-                {                    
-                	session.setAttribute("AdminEmailId", emailId);
-                	
-                    return "adminWelcomePage";
-                }
-                else
-                {
-                    return "logIn";
-                }
-            }
-            else if(emailId.equals(userDAO.getUserEmailId(emailId)))
-            {
-                if(password.equals(userDAO.getPassword(emailId)))
-                {
-                	session.setAttribute("UserEmailId", emailId);
-                  return "userWelcomePage";
-                }
-                else
-                {
-                    return "logIn";
-                }
-            }
+	public String login(@RequestParam("emailId") String emailId, @RequestParam("password") String password,
+			HttpSession session) {
+		try {
+			if (emailId.equals("ram5@eb.com")) {
+				String adminPassword = userDAO.getPassword(emailId);
+				if (adminPassword != null && adminPassword.equals(password)) {
+					session.setAttribute("AdminEmailId", emailId);
+					return "adminWelcomePage";
+				} else {
+					return "logIn";
+				}
+			} else {
+				String userEmail = userDAO.getUserEmailId(emailId);
+				if (userEmail != null) {
+					String userPassword = userDAO.getPassword(emailId);
+					if (userPassword != null && userPassword.equals(password)) {
+						session.setAttribute("UserEmailId", emailId);
+						return "userWelcomePage";
+					} else {
+						return "logIn";
+					}
+				} else {
+					return "logIn";
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Exception occurred: " + e.getMessage());
+			return "logIn";
+		}
+	}
 
-            else
-            {
-                return "logIn";
-            }   
-        }  
-        catch (Exception e) 
-        {
-            System.out.println(e);
-        }
-        return emailId;
-    }
 	@GetMapping("/listOfUsers")
 	public String getAllUser(Model model)
 	{		
@@ -174,8 +164,29 @@ public class UserController {
 	  {
 	  return "updateUserProfile";
 	  }
-	
-		
+	 
+	  
+	  
+	  @GetMapping("/UpdateCustomerProfile") 
+	  public String updateCustomerProfile() 
+	  {
+	  return "updateCustomerProfile";
+	  }
+	  
+	  @GetMapping("/AfterAdminUpdateUserProfile")
+		public String AdminUpdateUserProfile(@RequestParam("name")String name,@RequestParam("phoneNumber")long phoneNumber,@RequestParam("aadhaarNumber")long aadhaarNumber,@RequestParam("emailId")String emailId,Model model) {
+		    User user=new User();
+		    
+		    user.setName(name);				
+			user.setPhoneNumber(phoneNumber);
+			user.setAadhaarNumber(aadhaarNumber);
+			user.setEmailId(emailId);
+			
+			userDAO.adminUpdateUserDetails(name,phoneNumber,aadhaarNumber,emailId);
+			List<User> list=userDAO.listUsers();
+			model.addAttribute("list",list);
+			return "registerTable";
+		}
 	@GetMapping("/UpdateAdmin")
 	public String updateAdmin(@RequestParam("name")String name,@RequestParam("phoneNumber")long phoneNumber,@RequestParam("aadhaarNumber")long aadhaarNumber,@RequestParam("emailId")String emailId,Model model) {
 		User user=new User();
@@ -200,11 +211,12 @@ public class UserController {
 		return "adminProfile";
 	}
 	
-	@GetMapping("/delete")
+	@GetMapping("/deleteParticularUser")
 	public String deleteDetails(@RequestParam("emailId")String emailId,Model model)
 	{
 		User user=new User();
 		user.setEmailId(emailId);
+		
 		userDAO.delete(user);
 		List<User> list=userDAO.listUsers();
 		model.addAttribute("list",list);

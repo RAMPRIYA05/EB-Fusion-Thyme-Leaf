@@ -3,16 +3,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" th:href="@{/ebLogo.jpg}" type="image/x-icon">
-<style>
+<link rel="icon" th:href="@{/assets/ebLogo.jpg}" type="image/x-icon">
+ <script src="/javascript/logIn.js"></script>
 
+<style>
 body{
     
     font-family:'Times New Roman', Times, serif;
     background-color:peachpuff;
     margin: 0;
-    padding: 0;
-   
+    padding: 0;  
 }
 
 form{
@@ -35,7 +35,6 @@ h2{
     margin-bottom: 20px;
 }
 
-
 input[type="email"],
 input[type="password"]
 {
@@ -43,16 +42,14 @@ input[type="password"]
     padding:7px;
     margin-bottom:10px;
     border:1px solid gainsboro;
-    border-radius:5px;
-  
+    border-radius:5px;  
 }
 
 a{
  margin-left:60px;
 }
 
-button{
- 
+button{ 
     background-color:darkblue;
     color: white;
     padding: 10px 20px;
@@ -66,8 +63,6 @@ button:hover{
     background-color:green;
 }
 </style>
-
-
 
 </head>
 <body>
@@ -83,24 +78,6 @@ button:hover{
     
     <a href="UserRegistration">or register</a>
 </form>
-
-<script type="text/javascript">
-function validation() {
-	var emailId=document.getElementById("emailId");
-	   var password=document.getElementById("password");
-	   if(!emailId.checkValidity()){
-		   alert("EmailId must be filled out");
-		   return false;
-	   }
-	   if(!password.checkValidity()){
-		   alert("Password must be in one uppercase,one lowercase,one numbers,one special characters,and length 8");
-		   return false;
-	   }
-	   return true;
-	   
-}
-
-</script>
 
 </body>
 </html>

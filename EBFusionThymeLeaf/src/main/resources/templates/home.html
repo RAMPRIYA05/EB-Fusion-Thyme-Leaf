@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" th:href="@{/ebLogo.jpg}" type="image/x-icon">
+<link rel="icon" th:href="@{/assets/ebLogo.jpg}" type="image/x-icon">
 
 <style>
 * {
@@ -14,7 +13,7 @@
 
 body {
 	background-repeat: no-repeat;
-	background-image: url(adminHomeImage.jpg);
+	background-image: url(assets/adminHomeImage.jpg);
 	background-attachment: fixed;
 	background-size: cover;
 }
@@ -56,7 +55,7 @@ a {
     
       <header>
             <nav>
-                <img class="logo" th:src="@{/ebLogo.jpg}" alt="Logo">
+                <img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
                <p style="color:white;font-size:300%;font-weight: 100;padding-left:100px; font-style:italic;">EB FUSION EB SERVICES AND ITS PAYMENT</p>
 			<ul>
 				<li><a class="buttons-atag active" th:href="@{/}">Home</a></li>

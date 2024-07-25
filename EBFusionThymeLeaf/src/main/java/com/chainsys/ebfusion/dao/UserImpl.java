@@ -1,5 +1,6 @@
 package com.chainsys.ebfusion.dao;
 
+import java.sql.Blob;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.chainsys.ebfusion.mapper.BillMapper;
 import com.chainsys.ebfusion.mapper.ComplaintMapper;
 import com.chainsys.ebfusion.mapper.CustomerMapper;
+import com.chainsys.ebfusion.mapper.ImageMapper;
 import com.chainsys.ebfusion.mapper.PaymentMapper;
 import com.chainsys.ebfusion.mapper.UserMapper;
 import com.chainsys.ebfusion.model.Bill;
@@ -28,6 +30,7 @@ public class UserImpl implements UserDAO {
 	BillMapper billMapper;
 	PaymentMapper paymentMapper;
 	ComplaintMapper complaintMapper;
+	ImageMapper imageMapper;
 
 	@Override
 	public void saveDetails(User user) {		
@@ -78,7 +81,7 @@ public class UserImpl implements UserDAO {
 		Object[] params = { user.getName(), user.getPhoneNumber(), user.getAadhaarNumber(), user.getEmailId() };
 		jdbcTemplate.update(update, params);
 	}
-
+	
 	@Override
 	public void delete(User user) {
 		String delete = "update user set delete_user=1 where email_id=?";
@@ -92,6 +95,13 @@ public class UserImpl implements UserDAO {
 				+ "WHERE (name LIKE '%%%s%%' OR email_id LIKE '%%%s%%' OR phone_number LIKE '%%%s%%' OR aadhaar_number LIKE '%%%s%%' ) "
 				+ "AND delete_user=0", emailId, emailId, emailId, emailId);
 		return jdbcTemplate.query(retrive, new UserMapper());
+	}
+	
+	@Override
+	public void adminUpdateUserDetails(String name, long phoneNumber, long aadhaarNumber, String emailId) {
+		String update = "update user set name=?,phone_number=?,aadhaar_number=? where email_id=?";
+		Object[] params = { name, phoneNumber, aadhaarNumber,emailId };
+		jdbcTemplate.update(update, params);		
 	}
 
 	@Override
@@ -139,6 +149,19 @@ public class UserImpl implements UserDAO {
 	}
 
 	@Override
+	public List<Customer> getImage(String email,long serviceNumber) {
+		String read = "Select address_proof from customer_details where  email_id=? and service_number=?";
+		List<Customer> list = jdbcTemplate.query(read, new ImageMapper(), email,serviceNumber);
+		return list;
+	}
+	
+	/*
+	 * Blob document = rs.getBlob("address_proof"); if (document != null) { int
+	 * blobLength = (int) document.length(); byte[] blobAsBytes =
+	 * document.getBytes(1, blobLength); customer.setAddressProof(blobAsBytes); }
+	 */
+	
+	@Override
 	public void enterBill(Bill bill) {
 
 		String insert = "insert into bill(id,email_id,service_number,address,reading_units,reading_taken_date,due_date,service_type,amount,bill_status)values(?,?,?,?,?,?,?,?,?,?)";
@@ -148,6 +171,15 @@ public class UserImpl implements UserDAO {
 		jdbcTemplate.update(insert, params);
 	}
 
+	
+
+	@Override
+	public void updateReadingUnit() {
+	    String update = "update bill set bill_status = 'Paid' where reading_units <= 100 and bill_status = 'Not Paid'";
+	    jdbcTemplate.update(update);
+	}
+
+	
 	@Override
 	public List<Bill> viewBill() {
 		String read = "Select id,email_id,service_number,address,reading_units,reading_taken_date,due_date,service_type,amount,bill_status from bill where bill_status='Not Paid'";
@@ -166,10 +198,6 @@ public class UserImpl implements UserDAO {
 	@Override
 	public String readReadingTakenDate(String email, Long service) {
 		String read = "Select reading_taken_date from bill where email_id=? & service_number=?";
-		/*
-		 * Object[] readingDate= {email,service}; return
-		 * jdbcTemplate.queryForObject(read, String.class, readingDate);
-		 */
 	    return jdbcTemplate.queryForObject(read, String.class, email, service);
 
 	}
@@ -197,7 +225,7 @@ public class UserImpl implements UserDAO {
 		
 		Object[] paymentParams = { serviceNumber };
 		jdbcTemplate.update(delete, paymentParams);
-		Bill bill = new Bill();
+		
 		
 		String update = "update bill set bill_status='Paid' where service_number=?";
 		Object[] billParam = { serviceNumber };
@@ -206,7 +234,16 @@ public class UserImpl implements UserDAO {
 	}
 
 	@Override
-	public List<Payment> checkPayment(String email) {
+	public List<Payment> checkPayment(String email,long serviceNumber,String paymentDate,double amount) {
+
+		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status from payment where email_id=? and service_number=? and payment_date=? and amount=?";
+		List<Payment> list = jdbcTemplate.query(read, new PaymentMapper(), email,serviceNumber,paymentDate,amount);
+		return list;
+
+	}
+	
+	@Override
+	public List<Payment> checkPaymentAll(String email) {
 
 		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status from payment where email_id=?";
 		List<Payment> list = jdbcTemplate.query(read, new PaymentMapper(), email);
@@ -325,5 +362,9 @@ public class UserImpl implements UserDAO {
         
         
     }
+
+	
+
+	
 	
 }

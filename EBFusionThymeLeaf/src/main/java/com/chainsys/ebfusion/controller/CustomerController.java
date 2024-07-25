@@ -89,6 +89,23 @@ public class CustomerController {
 		return "applyConnectionTable";
 	}
 	
+	
+	
+	
+	@GetMapping("/ImageAddress")
+	public String imageAddressProof(Model model,HttpSession session,String emailId,Long serviceNumber) {
+       
+		List<Customer> list=userDAO.getImage(emailId,serviceNumber);
+		for(Customer customer:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
+             customer.setCustomerAddressProof(base64AddressProof);
+		}
+		model.addAttribute("list",list);
+		return "addressProofPicture";	
+	}
+	
+	
 	@GetMapping("/readAllConnection")
 	public String readAllAppliedConnection(Model model)
 	{ 

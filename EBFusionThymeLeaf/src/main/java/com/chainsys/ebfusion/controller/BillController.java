@@ -42,8 +42,8 @@ public class BillController {
 		bill.setDueDate(dueDate);
 		bill.setAmount(amount);
 		bill.setBillStatus("Not Paid");
-		userDAO.enterBill(bill);
-		
+		userDAO.enterBill(bill);	
+		 userDAO.updateReadingUnit(); 
 		List<Bill> list=userDAO.viewBill();
 		model.addAttribute("list",list);
 		
@@ -61,8 +61,7 @@ public class BillController {
 	
 	
 	@RequestMapping("/BillForm")
-	public String billForm(HttpSession session) {
-		String email=(String)session.getAttribute("UserEmailId");	
+	public String billForm(HttpSession session) {	
 		return "billForm";
 	}
 	@GetMapping("/readParticularBill")

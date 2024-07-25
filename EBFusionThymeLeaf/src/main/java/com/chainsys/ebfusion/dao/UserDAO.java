@@ -35,9 +35,12 @@ public interface UserDAO {
 	public List<Bill> viewBill();
 	public List<Bill> readBill(String email);
 	List<Bill> readPaidBill(String email);
+	public void updateReadingUnit();
 	
 	public void payAmount(Payment payment);
-	public List<Payment> checkPayment(String email);
+	List<Payment> checkPayment(String email, long serviceNumber, String paymentDate,double amount);
+	public List<Payment> checkPaymentAll(String email);
+	/* public List<Payment> checkPayment(String email); */
 	public List<Payment> viewPayment();
 	void updatePaidStatus(long serviceNumber);
 	
@@ -57,6 +60,13 @@ public interface UserDAO {
 	public List<Complaint> searchPending(String emailId);
 	List<Complaint> searchRectified(String emailId);
 	public List<Complaint> getComplaintById(int complaintId);
+	
+	public void adminUpdateUserDetails(String name, long phoneNumber, long aadhaarNumber, String emailId);
+	public List<Customer> getImage( String email,long serviceNumber);
+	
+	
+	
+	
 
 
 }

@@ -19,10 +19,11 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PaymentController {
-
+    
 	@Autowired
 	UserDAO userDAO;
 	JdbcTemplate jdbcTemplate;
+	public static int paymentId;
 
 	@PostMapping("/payBill")
 	public String payBill(@RequestParam("emailId") String emailId, @RequestParam("serviceNumber") long serviceNumber,
@@ -44,8 +45,8 @@ public class PaymentController {
 		userDAO.updatePaidStatus(serviceNumber);
 		String email = (String) session.getAttribute("UserEmailId");
 		 
-		List<Payment> list = userDAO.checkPayment(email);
-	
+		List<Payment> list = userDAO.checkPayment(email,serviceNumber,paymentDate,amount);
+	     System.out.println("readingTaken Date"+readingTakenDate);
 		model.addAttribute("readingTakenDate", readingTakenDate);
 		model.addAttribute("list", list);
 		return "viewPaidBill";
@@ -53,9 +54,9 @@ public class PaymentController {
 
 	@GetMapping("/viewPaidStatus")
 	public String viewPaidStatus(Model model, HttpSession session,String readingTakenDate) {
-		Bill bill = new Bill();
 		String email = (String) session.getAttribute("UserEmailId");
-		List<Payment> list = userDAO.checkPayment(email);
+		List<Payment> list = userDAO.checkPaymentAll(email);
+		System.out.println("readingTaken Date1"+readingTakenDate);
 		model.addAttribute("readingTakenDate", readingTakenDate);
 		model.addAttribute("list", list);
 		return "paymentHistory";

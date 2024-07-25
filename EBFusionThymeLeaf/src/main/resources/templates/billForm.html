@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Electricity Bill Form</title>
-    <link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+    <link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
+    <script src="/javascript/bill.js"></script>
     <style>
         form {
             background-color: peachpuff;
@@ -39,177 +40,39 @@
         }
     </style>
 
-    <script>
-    function calculateAmount() {
-        var readingUnits = parseFloat(document.getElementById("readingUnits").value);
-        var serviceType = document.getElementById("serviceType").value;
-        var ratePerUnit;
-        var amount = 0;
-
-        if (serviceType === "Domestic") {
-            if (readingUnits <= 100) {
-                ratePerUnit = 0;
-                amount = 0;
-            } else if (readingUnits <= 200) {
-                ratePerUnit = 1.00;
-                amount = ((readingUnits - 100) * ratePerUnit);
-            } else if (readingUnits <= 300) {
-                ratePerUnit = 2.00;
-                amount = ((readingUnits - 200) * ratePerUnit) + (100 * 1);
-            } else if (readingUnits <= 500) {
-                ratePerUnit = 3.00;
-                amount = ((readingUnits - 300) * ratePerUnit) + (100 * 2) + (100 * 1);
-            } else if (readingUnits <= 1000) {
-                ratePerUnit = 4.00;
-                amount = ((readingUnits - 500) * ratePerUnit) + (200 * 3) + (100 * 2) + (100 * 1);
-            } else {
-                ratePerUnit = 5.00;
-                amount = ((readingUnits - 1000) * ratePerUnit) + (500 * 4) + (200 * 3) + (100 * 2) + (100 * 1);
-            }
-        } else if (serviceType === "Commercial") {
-            if (readingUnits <= 100) {
-                ratePerUnit = 0;
-                amount = 0;
-            } else if (readingUnits <= 200) {
-                ratePerUnit = 2.00;
-                amount = ((readingUnits - 100) * ratePerUnit);
-            } else if (readingUnits <= 300) {
-                ratePerUnit = 3.00;
-                amount = ((readingUnits - 200) * ratePerUnit) + (100 * 2);
-            } else if (readingUnits <= 500) {
-                ratePerUnit = 4.00;
-                amount = ((readingUnits - 300) * ratePerUnit) + (100 * 2) + (100 * 3);
-            } else if (readingUnits <= 1000) {
-                ratePerUnit = 5.00;
-                amount = ((readingUnits - 500) * ratePerUnit) + (200 * 4) + (100 * 3) + (100 * 2);
-            } else {
-                ratePerUnit = 7.00;
-                amount = ((readingUnits - 1000) * ratePerUnit) + (500 * 5) + (200 * 4) + (100 * 3) + (100 * 2);
-            }
-        }
-
-        document.getElementById("amount").value = amount.toFixed(2); 
-    }
-
-    </script>
+  
 </head>
 <body>
-
-
-
-
-
     <form action="/Bill" method="post">
     
     <h2>Electricity Bill Form</h2>
        
         Email Id:
         <input type="email" id="emailId" name="emailId" th:value="${param.emailId}" readonly><br><br>
-
     
         Address:
         <input type="text" id="address" name="address" th:value="${param.address}" readonly><br><br>
-
        
         Service Number:
         <input type="number" id="serviceNumber" name="serviceNumber" th:value="${param.serviceNumber}" readonly><br><br>
 
-       
         Reading Units:
         <input type="number" id="readingUnits" name="readingUnits"  oninput="calculateAmount()" required><br><br>
-
       
         Reading Taken Date:
         <input type="date" id="readingTakenDate" name="readingTakenDate"  min="" max="" onchange="setDueDate()" required><br><br>
-
        
         Due Date:
-        <input type="date" id="dueDate" name="dueDate" required><br><br>
+        <input type="date" id="dueDate" name="dueDate" readonly><br><br>
 
-       
         Service Type:
         <input style="width: 95%; padding: 8px; margin: 5px; box-sizing: border-box;" id="serviceType" name="serviceType" th:value="${param.serviceType}" readonly>
-           
-        
+                   
         Amount:
         <input type="number" id="amount" name="amount"  readonly><br><br>
 
-        
-        <input type="submit" onclick="return validateForm()" value="Submit">
+        <input type="submit" onclick="validation()" value="Submit">
     </form>
-
-<script>
-   
-   /*  function checkSelectedMonth(readingTakenDate) {
-        var selectedDate = new Date(readingTakenDate.value);
-        var selectedMonth = selectedDate.getMonth() + 1; 
-        var serviceNumber = document.getElementById('serviceNumber').value;
-
-        
-        var inputs = document.querySelectorAll('input[type="date"]');
-        for (var i = 0; i < inputs.length; i++) {
-            var existingDate = new Date(inputs[i].value);
-            var existingServiceNumber = document.getElementById('serviceNumber').value;
-
-            if (inputs[i] !== readingTakenDate && existingDate.getMonth() + 1 === selectedMonth &&
-                    existingServiceNumber === serviceNumber) {
-                alert('You have already selected a date in this month.');
-                readingTakenDate.value = '';
-                return false;
-            }
-        }
-        return true;
-    }
-
-    
-    document.getElementById('dateForm').addEventListener('submit', function(event) {
-        var readingTakenDate= document.getElementById('readingTakenDate');
-        if (!checkSelectedMonth(readingTakenDate)) {
-            event.preventDefault(); 
-        }
-    }); */
-    
-    
-    
-    
-    
-  
-
-    function setDueDate() {
-        var readingTakenDate = new Date(document.getElementById('readingTakenDate').value);
-        var dueDate = new Date(readingTakenDate);
-        dueDate.setDate(dueDate.getDate() + 30);
-
-        
-        var year = dueDate.getFullYear();
-        var month = String(dueDate.getMonth() + 1).padStart(2, '0');
-        var day = String(dueDate.getDate()).padStart(2, '0');
-        var formattedDate = year + '-' + month + '-' + day;
-        document.getElementById('dueDate').value = formattedDate;
-    }
-
-    function setMinMaxDate() {
-        var today = new Date();
-        var maxDate = formatDate(today); 
-        var thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        var minDate = formatDate(thirtyDaysAgo);
-        document.getElementById('readingTakenDate').setAttribute('min', minDate);
-        document.getElementById('readingTakenDate').setAttribute('max', maxDate);
-    }
-
-    function formatDate(date) {
-        var year = date.getFullYear();
-        var month = String(date.getMonth() + 1).padStart(2, '0');
-        var day = String(date.getDate()).padStart(2, '0');
-        return year + '-' + month + '-' + day;
-    }
-
-    window.onload = function() {
-        setMinMaxDate();
-    };
-</script>
-
 
 </body>
 </html>

@@ -3,163 +3,123 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="icon" type="image/x-icon" href="ebLogo.jpg">
+<link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
+<script src="/javascript/applyNewConnection.js"></script>
 <style>
 body {
-    font-family: 'Times New Roman', Times, serif;
-    background-color: bisque;
-    margin: 0;
-    padding: 0;
+	font-family: 'Times New Roman', Times, serif;
+	background-color: bisque;
+	margin: 0;
+	padding: 0;
 }
 
 form {
-    width: 50%;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    margin-top: 30px;
+	width: 50%;
+	margin: 0 auto;
+	background-color: white;
+	padding: 20px;
+	border-radius: 5px;
+	margin-bottom: 30px;
+	margin-top: 30px;
 }
 
 fieldset {
-    border: none;
+	border: none;
 }
 
 h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+	text-align: center;
+	font-size: 24px;
+	margin-bottom: 20px;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-input[type="tel"],
 select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid gainsboro;
-    border-radius: 5px;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid gainsboro;
+	border-radius: 5px;
+}
+
+.apply {
+	width: 96%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid gainsboro;
+	border-radius: 5px;
 }
 
 button {
-    background-color: slateblue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	background-color: brown;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 button:hover {
-    background-color: green;
+	background-color: green;
 }
-
-a {
-    color: slateblue;
-    text-decoration: none;
-    margin-left: 10px;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 </style>
-
-<script>
-	function validateForm() {
-
-		var address = document.getElementById("address");
-		var district = document.getElementById("district");
-		var state = document.getElementById("state");
-		var  addressProof= document.getElementById("addressProof");
-		if (!address.checkValidity()) {
-			alert("Address must be filled out");
-			return false;
-		}
-		if (!district.checkValidity()) {
-			alert("Choose District");
-			return false;
-		}
-		if (!state.checkValidity()) {
-			alert("Choose State");
-			return false;
-		}
-		if (!addressProof.checkValidity()) {
-			alert("Insert your Address Proof");
-			return false;
-		}
-		
-		
-		return true;
-	}
-</script>
-
 
 </head>
 <body>
-    <form action="/applyConnection" method="post" enctype="multipart/form-data">
-        <fieldset>
-            <h2>Customer Property Details</h2>
-            
-            
-            <div>
-                <label>Email Id:</label>
-               
-                <input type="email" placeholder="Enter your EmailId" th:value="${session.UserEmailId}" name="emailId" id="emailId" readonly>
-            </div>
-            
-            
-            <div>
-                <label>Service Type:</label>
-                <select id="serviceType" name="serviceType" required>
-                    <option value="Domestic">Domestic</option>
-                    <option value="Commercial">Commercial</option>
-                </select>
-            </div>
-            
-           
-            <div>
-                <label>Address:</label>
-                <input type="text" placeholder="Enter your Address" id="address" name="address" required>
-            </div>
-            
-           
-            <div>
-                <label>District:</label>
-                <select id="district" name="district" required>
-                    <option value="" disabled selected>Select your district</option>
-                    <option value="Madurai">Madurai</option>
-                    <option value="Virudhunagar">Virudhunagar</option>
-                    <option value="Tirunelveli">Tirunelveli</option>
-                </select>
-            </div>
-            
-           
-            <div>
-                <label>State:</label>
-                <select id="state" name="state" required>
-                    <option value="" disabled selected>Select your state</option>
-                    <option value="Tamilnadu">TamilNadu</option>
-                </select>
-            </div>
-            
-           
-            <div>
-                <label>Address Proof:</label>
-                <input type="file" id="addressProof" name="addressProof" required>
-            </div>
-            
-           
-            <div>
-                <button type="submit" onclick="validateForm()">Submit</button>
-            </div>
-            
-        </fieldset>
-    </form>
+	<form action="/applyConnection" method="post"
+		enctype="multipart/form-data">
+		<fieldset>
+			<h2>Customer Property Details</h2>
+
+			<div>
+				<label for="emailId">Email Id:</label><br> <input class="apply"
+					type="email" placeholder="Enter your EmailId"
+					th:value="${session.UserEmailId}" name="emailId" id="emailId"
+					readonly>
+			</div>
+
+			<div>
+				<label for="serviceType">Service Type:</label><br> <select
+					id="serviceType" name="serviceType" required>
+					<option value="Domestic">Domestic</option>
+					<option value="Commercial">Commercial</option>
+				</select>
+			</div>
+
+			<div>
+				<label for="address">Address:</label><br> <input class="apply"
+					type="text" placeholder="Enter your Address" id="address"
+					name="address" required>
+			</div>
+
+			<div>
+				<label for="district">District:</label><br> <select
+					id="district" name="district" required>
+					<option value="" disabled selected>Select your district</option>
+					<option value="Madurai">Madurai</option>
+					<option value="Virudhunagar">Virudhunagar</option>
+					<option value="Tirunelveli">Tirunelveli</option>
+				</select>
+			</div>
+
+			<div>
+				<label for="state">State:</label><br> <select id="state"
+					name="state" required>
+					<option value="" disabled selected>Select your state</option>
+					<option value="Tamilnadu">TamilNadu</option>
+				</select>
+			</div>
+
+			<div>
+				<label for="addressProof">Address Proof:</label><br> <input
+					type="file" id="addressProof" name="addressProof" required>
+			</div>
+			<br>
+
+			<div>
+				<button type="submit" onclick="validateForm()">Submit</button>
+			</div>
+
+		</fieldset>
+	</form>
 </body>
 </html>
