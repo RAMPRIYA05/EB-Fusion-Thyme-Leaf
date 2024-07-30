@@ -10,11 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.chainsys.ebfusion.dao.UserDAO;
 import com.chainsys.ebfusion.model.Complaint;
-import com.chainsys.ebfusion.model.Customer;
+import com.chainsys.ebfusion.service.ComplaintService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,6 +23,8 @@ public class ComplaintController {
 	@Autowired
    UserDAO userDAO;
 	JdbcTemplate jdbcTemplate;
+	@Autowired
+	ComplaintService complaintService;
 	
 	@GetMapping("/applyComplaint")
 	public String applyComplaint(@RequestParam("emailId")String emailId,@RequestParam("serviceNumber")long serviceNumber,@RequestParam("description")String description,@RequestParam("complaintStatus")String complaintStatus,Model model,HttpSession session) {
@@ -36,8 +37,7 @@ public class ComplaintController {
 		userDAO.applyComplaint(complaint);
 		
 		String email=(String)session.getAttribute("UserEmailId");
-		List<Complaint> list=userDAO.viewComplaint(email);
-		model.addAttribute("list",list);
+		complaintService.viewComplaint(model,email);
 		return "customerViewComplaint";
 	}
 	
@@ -57,16 +57,14 @@ public class ComplaintController {
 	public String viewPendingComplaint(Model model,HttpSession session)
 	{
 		String email=(String)session.getAttribute("UserEmailId");
-		List<Complaint> list=userDAO.viewComplaint(email);
-		model.addAttribute("list",list);
+		complaintService.viewComplaint(model,email);
 		return "customerViewComplaint";
 	}
 	
 	@GetMapping("/adminViewComplaint")
 	public String adminViewComplaint(Model model)
 	{
-		List<Complaint> list=userDAO.viewPendingComplaint();
-		model.addAttribute("list",list);
+		complaintService.viewPendingComplaint(model);
 		return "adminViewComplaint";
 	}
 	
@@ -74,9 +72,8 @@ public class ComplaintController {
 	public String updateComplaint(@RequestParam("complaintStatus")String complaintStatus,@RequestParam("complaintId") int complaintId,Model model) {
 		Complaint complaint=new Complaint();
 		complaint.setComplaintId(complaintId);
-		userDAO.updateComplaint(complaintStatus, complaintId);
-		List<Complaint> list=userDAO.viewPendingComplaint();
-		model.addAttribute("list",list);
+		complaintService.updateComplaint(complaintStatus, complaintId);
+		complaintService.viewPendingComplaint(model);
 		return "adminViewComplaint";
 	}
 	
@@ -85,25 +82,21 @@ public class ComplaintController {
 	public String viewRectifiedComplaint(Model model,HttpSession session)
 	{
 		String email=(String)session.getAttribute("UserEmailId");
-		List<Complaint> list=userDAO.rectifiedComplaint(email);
-		model.addAttribute("list",list);
+		complaintService.rectifiedComplaint(model, email);
 		return "rectifiedComplaint";
 	}
 	
 	@GetMapping("/rectifiedComplaint")
 	public String rectifiedComplaint(Model model)
 	{
-		
-		List<Complaint> list=userDAO.adminRectifiedComplaint();
-		model.addAttribute("list",list);
+		complaintService.adminRectifiedComplaint(model);
 		return "adminRectifiedComplaint";
 	}
 	
 	@GetMapping("/searchPendingComplaint")
 	public String searchAppliedConnection(@RequestParam("emailId")String emailId,Model model)
 	{		
-		List<Complaint> list=userDAO.searchPending(emailId);
-		model.addAttribute("list",list);
+		complaintService.searchPending(model, emailId);
 		return "adminViewComplaint";
 	}
 	
@@ -126,7 +119,6 @@ public class ComplaintController {
 		.collect(Collectors.toList());
 		model.addAttribute("list", list);
 		return "adminRectifiedComplaint";
-		
 	 }
 	
 	

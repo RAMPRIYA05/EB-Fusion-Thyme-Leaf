@@ -120,8 +120,13 @@ h4 {
 		<div class="payment-details">
 			<span>Service Number:</span> <span th:text="${obj.serviceNumber}"></span>
 		</div>
+		
+		
 		<div class="payment-details">
 			<span>Account Number:</span> <span th:text="${obj.accountNumber}"></span>
+		</div>
+		<div class="payment-details">
+			<span>IFSC:</span> <span th:text="${obj.ifsc}"></span>
 		</div>
 		<div class="payment-details">
 			<span>Payment Date:</span> <span th:text="${obj.paymentDate}"></span>
@@ -133,9 +138,11 @@ h4 {
 			th:onclick="generatePaymentReceipt(
                     [[${obj.paymentId}]],
                     [[${obj.serviceNumber}]],
+                   
                     [[${obj.paymentDate}]],
                     [[${obj.totalAmount}]],
-                    [[${obj.accountNumber}]]
+                    [[${obj.accountNumber}]],
+                    [[${obj.ifsc}]]
                 )">
 			Print Receipt</button>
 	</div>
@@ -163,6 +170,7 @@ h4 {
         doc.text("Account Number: " + accountNumber, 10, 70);
         doc.text("Payment Date: " + paymentDate, 10, 80);
         doc.text("Bill Amount: " + totalAmount, 10, 90);
+        
         doc.save("paymentHistory_" + serviceNumber + ".pdf");
     }
 </script>

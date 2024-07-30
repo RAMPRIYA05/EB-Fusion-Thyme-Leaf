@@ -15,7 +15,8 @@ public class Bill {
     String dueDate;
     double amount;
     String billStatus;
-    
+  
+	
 	public int getId() {
 		return id;
 	}
@@ -86,6 +87,7 @@ public class Bill {
 				+ serviceType + ", address=" + address + ", readingUnits=" + readingUnits + ", readingTakenDate="
 				+ readingTakenDate + ", dueDate=" + dueDate + ", amount=" + amount + ", billStatus=" + billStatus + "]";
 	}
+	
 	
 	
 }

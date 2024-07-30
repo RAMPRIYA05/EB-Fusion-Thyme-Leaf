@@ -1,5 +1,7 @@
 package com.chainsys.ebfusion.controller;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.multipart.MultipartFile;
 import com.chainsys.ebfusion.dao.UserDAO;
+import com.chainsys.ebfusion.model.Bill;
 import com.chainsys.ebfusion.model.Customer;
-import com.chainsys.ebfusion.model.User;
+import com.chainsys.ebfusion.service.CustomerService;
 import com.chainsys.ebfusion.validation.Validation;
 
 
@@ -28,6 +31,9 @@ public class CustomerController {
 	JdbcTemplate jdbcTemplate;
 	@Autowired
 	Validation validate;
+	
+	@Autowired
+	CustomerService customerService;
 	
 	@PostMapping("/applyConnection")
 	public String applyConnection(@RequestParam("emailId")String emailId,@RequestParam("serviceType")String serviceType,@RequestParam("address")String address,@RequestParam("district")String district,@RequestParam("state")String state,@RequestParam("addressProof") MultipartFile addressProof, Model model,HttpSession session) throws IOException
@@ -49,17 +55,14 @@ public class CustomerController {
 		customer.setServiceNumber(serviceNumber);
 		customer.setConnectionStatus("applied");
 		
+		customerService.findLatestBillByServiceNumber(customer);
 		
-		userDAO.applyConnection(customer);
+        customerService.applyConnection(customer);
+		
 	
         String email=(String)session.getAttribute("UserEmailId");
-		List<Customer> list=userDAO.readApplyConnection(email);
-		for(Customer customer1:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer1.getAddressProof());
-             customer1.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);	
+		customerService.readApplyConnection(email,model);
+			
 		  return "applyConnectionTable";
 	        }
 	        else
@@ -79,13 +82,7 @@ public class CustomerController {
 	public String readAppliedConnection(Model model,HttpSession session)
 	{ 		
 		String email=(String)session.getAttribute("UserEmailId");		
-		List<Customer> list=userDAO.readApplyConnection(email);
-		for(Customer customer:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
-             customer.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);
+		customerService.readApplyConnection(email,model);
 		return "applyConnectionTable";
 	}
 	
@@ -95,13 +92,8 @@ public class CustomerController {
 	@GetMapping("/ImageAddress")
 	public String imageAddressProof(Model model,HttpSession session,String emailId,Long serviceNumber) {
        
-		List<Customer> list=userDAO.getImage(emailId,serviceNumber);
-		for(Customer customer:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
-             customer.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);
+		customerService.getImage(emailId,serviceNumber,model);
+		
 		return "addressProofPicture";	
 	}
 	
@@ -109,13 +101,8 @@ public class CustomerController {
 	@GetMapping("/readAllConnection")
 	public String readAllAppliedConnection(Model model)
 	{ 
-		List<Customer> list=userDAO.readAllApplyConnection();
-		for(Customer customer:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
-             customer.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);
+		customerService.readAllApplyConnection(model);
+		
 		return "approveConnection";	
 	}
 	
@@ -123,53 +110,60 @@ public class CustomerController {
 	public String approvedConnection(Model model,HttpSession session)
 	{ 
 		String email=(String)session.getAttribute("UserEmailId");
-		List<Customer> list=userDAO.readApprovedConnection(email);
-		for(Customer customer:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
-             customer.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);
+		customerService.readApprovedConnection(email,model);
 		return "customerViewApprovedConnection";	
 	}
 	
 	@GetMapping("/allApprovedConnection")
-	public String allApprovedConnection(Model model)
-	{ 
-		List<Customer> list=userDAO.allApprovedConnection();
-		for(Customer customer:list)
-		{ 
-			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
-             customer.setCustomerAddressProof(base64AddressProof);
-		}
-		model.addAttribute("list",list);
-		return "adminViewApprovedConnection";	
+	public String allApprovedConnection(Model model, Long serviceNumber) {
+		 customerService.allApprovedConnection(model);
+		
+		Customer customer=new Customer();
+		customerService.findLatestBillByServiceNumber(customer);
+	
+		return "adminViewApprovedConnection";
 	}
+
+	/*
+	 * private boolean isBillEntryAllowed(Bill latestBill) { if (latestBill == null)
+	 * { return true; }
+	 * 
+	 * LocalDate currentDate = LocalDate.now(); LocalDate readingTakenDate =
+	 * LocalDate.parse(latestBill.getReadingTakenDate());
+	 * 
+	 * long daysDifference = ChronoUnit.DAYS.between(readingTakenDate, currentDate);
+	 * 
+	 * 
+	 * if (daysDifference >= 60) { return true; } else { return false; }
+	 * 
+	 * }
+	 */
 		
 	@GetMapping("/customerConnection")
 	public String customerConnection(@RequestParam("serviceNumber")long serviceNumber,Model model,HttpSession session)
 	{
 		Customer customer=new Customer();
 		customer.setServiceNumber(serviceNumber);
-		userDAO.adminApproveConnection(customer);
-		List<Customer> list=userDAO.readAllApplyConnection();
-		model.addAttribute("list",list);
+		customerService.adminApproveConnection(customer);
+		customerService.readAllApplyConnection(model);
+		
 		return "approveConnection";					
 	}
 	
 	@GetMapping("/searchConnection")
 	public String searchConnection(@RequestParam("emailId")String emailId,Model model)
 	{		
-		List<Customer> list=userDAO.searchConnection(emailId);
-		model.addAttribute("list",list);
+		customerService.searchConnection(emailId,model);
+		
 		return "adminViewApprovedConnection";
 	}
 	
 	@GetMapping("/searchAppliedConnection")
 	public String searchAppliedConnection(@RequestParam("emailId")String emailId,Model model)
 	{		
-		List<Customer> list=userDAO.searchConnection(emailId);
-		model.addAttribute("list",list);
+		customerService.searchConnection(emailId,model);
+		
+		
 		return "approveConnection";
 	}
 	

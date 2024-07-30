@@ -23,6 +23,32 @@ h4 {
 	margin-top: 31px;
 	text-align: center;
 }
+
+.slick-header-column {
+    background-color:brown; 
+    color: white; 
+    font-weight: bold; 
+    text-align: center; 
+ height:30px !important;
+}
+
+
+.slick-cell {
+    padding: 8px; 
+    text-align: left;
+   
+}
+
+
+.slick-row:nth-child(even) {
+    background-color: white; 
+}
+
+
+.slick-row {
+    background-color: peachpuff; 
+}
+
 </style>
 
 </head>
@@ -98,7 +124,7 @@ h4 {
 	 <h2>Rectified Complaints</h2>
  
  <h4>Search:
-<input type="text" id="searchInput"></h4>
+<input type="text" id="searchInput"></h4><br>
     <div id="myGrid" style="height: 400px;"></div>
     <script th:src="@{/lib/jquery-1.7.min.js}"></script>
     <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
@@ -110,11 +136,11 @@ h4 {
     <script th:inline="javascript">
         $(document).ready(function () {
             var columns = [
-                { id: "complaintId", name: "Complaint Id", field: "complaintId", width: 100,sortable:true  },
-                { id: "emailId", name: "Email Id", field: "emailId",sortable:true},
-                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",sortable:true  },
-                { id: "description", name: "Description", field: "description" ,sortable:true},
-                { id: "complaintStatus", name: "Complaint Status", field: "complaintStatus" }
+                { id: "complaintId", name: "Complaint Id", field: "complaintId", width: 10,sortable:true  },
+                { id: "emailId", name: "Email Id", field: "emailId",width: 70,sortable:true},
+                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",width: 10,sortable:true  },
+                { id: "description", name: "Description", field: "description" ,width: 100,sortable:true},
+                { id: "complaintStatus", name: "Complaint Status",width: 10, field: "complaintStatus" }
                
             ];
 

@@ -19,6 +19,7 @@ public class PaymentMapper implements RowMapper<Payment>{
 		double totalAmount=rs.getDouble("total_amount");
 		double payedAmount=rs.getDouble("payed_amount");
 		String payedStatus=rs.getString("payed_status");
+		String ifsc=rs.getString("ifsc");
 		
 		payment.setPaymentId(paymentId);
 		payment.setEmailId(emailId);
@@ -30,6 +31,7 @@ public class PaymentMapper implements RowMapper<Payment>{
 		payment.setTotalAmount(totalAmount);
 		payment.setPayedAmount(payedAmount);
 		payment.setPayedStatus(payedStatus);
+		payment.setIfsc(ifsc);
 		
 		return payment;
 	

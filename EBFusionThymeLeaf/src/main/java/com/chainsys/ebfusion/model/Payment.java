@@ -15,7 +15,16 @@ public class Payment {
 	double totalAmount;
 	double payedAmount;
 	String payedStatus;
+	String ifsc;
 	
+	
+	
+	public String getIfsc() {
+		return ifsc;
+	}
+	public void setIfsc(String ifsc) {
+		this.ifsc = ifsc;
+	}
 	public String getEmailId() {
 		return emailId;
 	}
@@ -83,8 +92,9 @@ public class Payment {
 		return "Payment [emailId=" + emailId + ", serviceNumber=" + serviceNumber + ", paymentId=" + paymentId
 				+ ", amount=" + amount + ", accountNumber=" + accountNumber + ", dueDate=" + dueDate + ", paymentDate="
 				+ paymentDate + ", totalAmount=" + totalAmount + ", payedAmount=" + payedAmount + ", payedStatus="
-				+ payedStatus + "]";
+				+ payedStatus + ", ifsc=" + ifsc + "]";
 	}
+	
 	
 	
 	

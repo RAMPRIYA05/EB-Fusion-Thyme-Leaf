@@ -40,7 +40,6 @@ public interface UserDAO {
 	public void payAmount(Payment payment);
 	List<Payment> checkPayment(String email, long serviceNumber, String paymentDate,double amount);
 	public List<Payment> checkPaymentAll(String email);
-	/* public List<Payment> checkPayment(String email); */
 	public List<Payment> viewPayment();
 	void updatePaidStatus(long serviceNumber);
 	
@@ -63,6 +62,10 @@ public interface UserDAO {
 	
 	public void adminUpdateUserDetails(String name, long phoneNumber, long aadhaarNumber, String emailId);
 	public List<Customer> getImage( String email,long serviceNumber);
+	
+	public Bill findLatestBillByServiceNumber(long serviceNumber);
+	void canEnterBillUpdate(long serviceNumber);
+	
 	
 	
 	

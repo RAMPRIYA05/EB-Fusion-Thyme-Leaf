@@ -57,14 +57,18 @@ button:hover {
         <br>
         Account Number: <input type="number" id="accountNumber" name="accountNumber" pattern="^[0-9]{9,18}$" onkeyup="calculateTotalAmount()" required><br>
         <br>
+        IFSC:<input type="text" id="ifsc" name="ifsc" pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required><br>
+        <br>
         Due Date: <input style="width:95%;padding:8px;margin:5px;box-sizing:border-box;" id="dueDate" name="dueDate" th:value="${param.dueDate}" readonly><br>
         <br>
         Payment Date: <input style="width:95%;padding:8px;margin:5px;box-sizing:border-box;" id="paymentDate" name="paymentDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly><br>
         <br>
-        Total Amount: <input type="number" id="totalAmount" name="totalAmount" readonly><br>
-        <br>
+        
         Penalty: <input type="number" id="payedAmount" name="payedAmount" readonly><br>
         <input type="hidden" name="readingTakenDate" th:value="${param.readingTakenDate}">
+        <br>
+        
+        Total Amount: <input type="number" id="totalAmount" name="totalAmount" readonly><br>
         <br>
         <button type="submit" onclick="validate()">Submit</button>
     </form>

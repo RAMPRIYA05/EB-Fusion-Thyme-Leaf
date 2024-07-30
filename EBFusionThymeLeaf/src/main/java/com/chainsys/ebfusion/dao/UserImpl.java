@@ -4,8 +4,9 @@ import java.sql.Blob;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.stereotype.Repository;
 
 import com.chainsys.ebfusion.mapper.BillMapper;
@@ -104,32 +105,33 @@ public class UserImpl implements UserDAO {
 		jdbcTemplate.update(update, params);		
 	}
 
+	
 	@Override
 	public void applyConnection(Customer customer) {
-		String insert = "insert into customer_details(email_id,service_number,service_type,address,district,state,connection_status,address_proof)values(?,?,?,?,?,?,?,?)";
+		String insert = "insert into customer_details(email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill)values(?,?,?,?,?,?,?,?,?)";
 		Object[] params = { customer.getEmailId(), customer.getServiceNumber(), customer.getServiceType(),
 				customer.getAddress(), customer.getDistrict(), customer.getState(), customer.getConnectionStatus(),
-				customer.getAddressProof() };
+				customer.getAddressProof(),customer.isCanEnterBill() ? 1 : 0  };
 		jdbcTemplate.update(insert, params);
 	}
 
 	@Override
 	public List<Customer> readApplyConnection(String email) {
-		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof from customer_details where email_id=? and connection_status='applied'";
+		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill from customer_details where email_id=? and connection_status='applied'";
 		List<Customer> list = jdbcTemplate.query(read, new CustomerMapper(), email);
 		return list;
 	}
 
 	@Override
 	public List<Customer> readAllApplyConnection() {
-		String read = "SELECT email_id,service_number,service_type,address,district,state,connection_status,address_proof from customer_details where connection_status='applied'";
+		String read = "SELECT email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill from customer_details where connection_status='applied'";
 		List<Customer> list = jdbcTemplate.query(read, new CustomerMapper());
 		return list;
 	}
 
 	@Override
 	public List<Customer> readApprovedConnection(String email) {
-		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof from customer_details where email_id=? and connection_status='approved'";
+		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill from customer_details where email_id=? and connection_status='approved'";
 		List<Customer> list = jdbcTemplate.query(read, new CustomerMapper(), email);
 		return list;
 	}
@@ -143,7 +145,7 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public List<Customer> allApprovedConnection() {
-		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof from customer_details where  connection_status='approved'";
+		String read = "Select email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill from customer_details where  connection_status='approved'";
 		List<Customer> list = jdbcTemplate.query(read, new CustomerMapper());
 		return list;
 	}
@@ -169,9 +171,15 @@ public class UserImpl implements UserDAO {
 				bill.getReadingUnits(), bill.getReadingTakenDate(), bill.getDueDate(), bill.getServiceType(),
 				bill.getAmount(), bill.getBillStatus() };
 		jdbcTemplate.update(insert, params);
+		
+		
 	}
-
-	
+ 
+	@Override
+	public void canEnterBillUpdate(long serviceNumber) {	
+	String updateCanEnterBill = "UPDATE customer_details SET can_enter_bill = 0 WHERE service_number = ?";
+    jdbcTemplate.update(updateCanEnterBill, serviceNumber);
+	}	
 
 	@Override
 	public void updateReadingUnit() {
@@ -211,10 +219,10 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public void payAmount(Payment payment) {
-		String insert = "insert into payment(payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status)values(?,?,?,?,?,?,?,?,?)";
+		String insert = "insert into payment(payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status,ifsc)values(?,?,?,?,?,?,?,?,?,?)";
 		Object[] params = { payment.getPaymentId(), payment.getEmailId(), payment.getServiceNumber(),
 				payment.getAmount(), payment.getAccountNumber(), payment.getPaymentDate(), payment.getTotalAmount(),
-				payment.getPayedAmount(), payment.getPayedStatus() };
+				payment.getPayedAmount(), payment.getPayedStatus(),payment.getIfsc() };
 		jdbcTemplate.update(insert, params);
 
 	}
@@ -236,7 +244,7 @@ public class UserImpl implements UserDAO {
 	@Override
 	public List<Payment> checkPayment(String email,long serviceNumber,String paymentDate,double amount) {
 
-		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status from payment where email_id=? and service_number=? and payment_date=? and amount=?";
+		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status,ifsc from payment where email_id=? and service_number=? and payment_date=? and amount=?";
 		List<Payment> list = jdbcTemplate.query(read, new PaymentMapper(), email,serviceNumber,paymentDate,amount);
 		return list;
 
@@ -245,7 +253,7 @@ public class UserImpl implements UserDAO {
 	@Override
 	public List<Payment> checkPaymentAll(String email) {
 
-		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status from payment where email_id=?";
+		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status,ifsc from payment where email_id=?";
 		List<Payment> list = jdbcTemplate.query(read, new PaymentMapper(), email);
 		return list;
 
@@ -253,7 +261,7 @@ public class UserImpl implements UserDAO {
 
 	@Override
 	public List<Payment> viewPayment() {
-		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status from payment";
+		String read = "Select payment_id,email_id,service_number,amount,account_number,payment_date,total_amount,payed_amount,payed_status,ifsc from payment";
 		List<Payment> list = jdbcTemplate.query(read, new PaymentMapper());
 		return list;
 	}
@@ -362,6 +370,24 @@ public class UserImpl implements UserDAO {
         
         
     }
+
+	@Override
+	public Bill findLatestBillByServiceNumber(long serviceNumber) {
+		String sql = "SELECT id, email_id, service_number, address, reading_units, reading_taken_date, due_date, service_type, amount, bill_status " +
+                "FROM bill " +
+                "WHERE service_number = ? " +
+                "ORDER BY reading_taken_date DESC " +
+                "LIMIT 1";
+
+		 List<Bill> bills =jdbcTemplate.query(sql,new BillMapper(),serviceNumber);
+
+    if (bills.isEmpty()) {
+        return null; 
+    } else {
+        return bills.get(0);
+    }
+		
+	}
 
 	
 

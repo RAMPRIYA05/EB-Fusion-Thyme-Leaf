@@ -151,14 +151,14 @@ padding: 8px;
     <script th:inline="javascript">
         $(document).ready(function () {
             var columns = [
-                { id: "id", name: "Id", field: "id", width: 100 ,sortable:true},
-                { id: "emailId", name: "Email Id", field: "emailId"},
-                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",sortable:true  },
-                { id: "address", name: "Address", field: "address" },
+                { id: "id", name: "Id", field: "id", width: 50 ,sortable:true},
+                { id: "emailId", name: "Email Id", field: "emailId",width: 130,sortable:true},
+                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",width: 100,sortable:true  },
+                { id: "address", name: "Address", field: "address",width: 130,sortable:true },
                 { id: "readingUnits", name: "ReadingUnits", field: "readingUnits" ,sortable:true},
-                { id: "readingTakenDate", name: "Reading Taken Date", field: "readingTakenDate",sortable:true },
+                { id: "readingTakenDate", name: "Reading Taken Date", field: "readingTakenDate",width: 130,sortable:true },
                 { id: "dueDate", name: "Due Date", field: "dueDate",sortable:true },
-                { id: "serviceType", name: "Service Type", field: "serviceType" },
+                { id: "serviceType", name: "Service Type", field: "serviceType",sortable:true },
                 { id: "amount", name: "Amount", field: "amount",sortable:true },
                 { id: "billStatus", name: "Bill Status", field: "billStatus" }
             ];

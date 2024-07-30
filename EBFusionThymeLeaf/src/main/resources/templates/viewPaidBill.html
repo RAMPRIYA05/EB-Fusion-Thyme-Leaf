@@ -75,6 +75,7 @@ h2 {
                 <th>Bill Month</th>
                 <th>Amount</th>
                 <th>Account Number</th>
+                <th>IFSC</th>
                 <th>Payment Date</th>
                 <th>Total Amount</th>
                 <th>Penalty</th>
@@ -91,6 +92,7 @@ h2 {
                 <td th:text="${readingTakenDate}"></td>
                 <td th:text="${obj.amount}"></td>
                 <td th:text="${obj.accountNumber}"></td>
+                 <td th:text="${obj.ifsc}"></td>
                 <td th:text="${obj.paymentDate}"></td>
                 <td th:text="${obj.totalAmount}"></td>
                 <td th:text="${obj.payedAmount}"></td>
@@ -103,6 +105,7 @@ h2 {
                     [[${obj.paymentDate}]], 
                     [[${obj.amount}]], 
                     [[${obj.accountNumber}]], 
+                    [[${obj.ifsc}]], 
                     [[${obj.payedAmount}]], 
                     [[${obj.totalAmount}]])">
         Print Receipt
@@ -138,7 +141,7 @@ h2 {
         doc.text("Payment Date: " + paymentDate, 10, 80)
         doc.text("Electricity Bill: " + amount, 10, 90);       
         doc.text("Account Number: " + accountNumber, 10, 100);
-        doc.text("Electricity Bill+Penalty: " + payAmount, 10, 110);       
+        doc.text("Penalty: " + payAmount, 10, 110);       
         doc.text("Total Amount: " + totalAmount, 10, 120);
        
         doc.save("receipt_" + serviceNumber + ".pdf");

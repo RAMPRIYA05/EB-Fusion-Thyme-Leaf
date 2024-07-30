@@ -5,7 +5,7 @@
 <title>Insert title here</title>
 <link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
 <link rel="stylesheet" href="/css/title.css">
-<link rel="stylesheet" href="/css/table.css">
+
 <style>
 * {
 	margin: 0;
@@ -13,23 +13,53 @@
 	box-sizing: border-box;
 }
 
+.container {
+	max-width: 300px;
+	margin: 0 auto;
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin-top: 40px;
+}
+
+.profile-info {
+	margin-bottom: 15px;
+	
+	display: flex;
+	gap: 10px;
+
+}
+
+.profile-info .label {
+	font-weight: bold;
+}
+
+.profile-info .value {
+	margin-left: 10px;
+}
+
+.update-form {
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	gap: 50px;
+}
+
 button {
-	color: brown;
-	background-color: white;
-	opacity: 0.9;
-	padding: 2px;
+	color: white;
+	background-color: brown;
+	border: none; padding : 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	padding: 10px 20px;
 }
 
-input[type="submit"] {
-	color: brown;
-	background-color: white;
-	opacity: 0.9;
-	padding: 2px;
-}
-
-h2 {
-	margin-top: 30px;
-	margin-left: 500px;
+button:hover {
+	background-color: green;
+	transform: scale(1.05);
 }
 </style>
 
@@ -82,49 +112,58 @@ h2 {
 		</nav>
 	</header>
 
-	<h2>User Profile</h2>
 
-	<table border="1">
-		<thead>
-			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Email Id</th>
-				<th scope="col">Phone Number</th>
-				<th scope="col">Aadhaar Number</th>
-				<th scope="col">Update</th>
-				<th scope="col">Delete</th>
-			</tr>
-		</thead>
-		<tbody>
 
-			<tr th:each="user : ${list}">
-				<td th:text="${user.name}"></td>
-				<td th:text="${user.emailId}"></td>
-				<td th:text="${user.phoneNumber}"></td>
-				<td th:text="${user.aadhaarNumber}"></td>
-				<td>
-					<form action="UpdateUserProfile">
+	<br>
+		<div class="container">
+			<h2 style="text-align: center; margin-top: 10px;margin-bottom: 10px;">User Profile</h2>
+			
+			<div th:each="user : ${list}" class="profile-item">
+            
+				<div class="profile-info">
+					<div class="profile-label">Name:</div>
+					<div class="profile-value" th:text="${user.name}"></div>
+
+				</div>
+				<div class="profile-info">
+					<div class="profile-label">Email Id:</div>
+					<div class="profile-value" th:text="${user.emailId}"></div>
+
+				</div>
+				<div class="profile-info">
+					<div class="profile-label">Phone Number:</div>
+					<div class="profile-value" th:text="${user.phoneNumber}"></div>
+
+				</div>
+				<div class="profile-info">
+					<div class="profile-label">Aadhaar Number:</div>
+					<div class="profile-value" th:text="${user.aadhaarNumber}"></div>
+				</div>
+				<div class="update-form">
+					<form action="/UpdateUserProfile" method="get">
 						<input type="hidden" name="name" th:value="${user.name}">
 						<input type="hidden" name="emailId" th:value="${user.emailId}">
+
 						<input type="hidden" name="phoneNumber"
 							th:value="${user.phoneNumber}"> <input type="hidden"
 							name="aadhaarNumber" th:value="${user.aadhaarNumber}">
-						<button type="submit">Update</button>
-					</form>
-				</td>
-				<td>
-					<form action="/deleteUser" method="get">
-						<input type="hidden" name="emailId" th:value="${user.emailId}">
-						<button type="submit">Delete</button>
-					</form>
-				</td>
-			</tr>
 
-			<tr th:if="${#lists.isEmpty(list)}">
-				<td colspan="6">No records found.</td>
-			</tr>
-		</tbody>
-	</table>
+						<button type="submit">Update</button>
+
+					</form>
+					<form th:action="@{/deleteAdmin}" method="get">
+
+						<input type="hidden" name="emailId" th:value="${user.emailId}">
+						<button type="submit" class="btn-delete">Delete</button>
+
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${list.size() == 0}" class="no-records">No records
+			found.</div>
+
 
 </body>
 </html>

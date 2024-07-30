@@ -26,7 +26,9 @@ public class CustomerMapper implements RowMapper<Customer> {
 	            customer.setAddressProof(blobAsBytes);
 	        }
 	        
+	        boolean canEnterBill=rs.getBoolean("can_enter_bill");
 		String connectionStatus=rs.getString("connection_status");
+		
 		customer.setEmailId(emailId);
 		customer.setServiceNumber(serviceNumber);
 		customer.setServiceType(serviceType);
@@ -35,6 +37,7 @@ public class CustomerMapper implements RowMapper<Customer> {
 		customer.setState(state);
 		
 		customer.setConnectionStatus(connectionStatus);
+		customer.setCanEnterBill(canEnterBill);
 		
 		return customer;
 }

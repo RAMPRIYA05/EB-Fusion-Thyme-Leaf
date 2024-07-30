@@ -4,67 +4,246 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="icon" th:href="@{/assets/ebLogo.jpg}" type="image/x-icon">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="/javascript/logIn.js"></script>
 
 <style>
 * {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
 
-body {
-	background-repeat: no-repeat;
-	background-image: url(assets/adminHomeImage.jpg);
+
+body{
+    background-repeat: no-repeat;
+    font-family:'Times New Roman', Times, serif;
+    background-image: url(assets/adminHomeImage.jpg);
 	background-attachment: fixed;
-	background-size: cover;
+	background-size: cover;  
+    width: auto;
+	min-height: 100vh;
+}
+
+
+
+.navbar-nav {
+	background-color: peachpuff;
+	padding: 10px;
+	height: 100px;
+	
 }
 
 .logo {
-	size: 30px;
-	height: 60px;
+	max-width: 60px;
+	vertical-align: middle;
 }
 
-nav {
+
+
+#para
+{
+	position: relative;
+	bottom: 50px;
+	margin-left: 190px;
+}
+
+.navbar-nav p {
+	color: brown;
+	font-size: 40px;
+	font-weight: 100;
+	padding-left: 10px;
+	font-style: italic;
+	vertical-align: middle;
+	
+}
+
+.navbar {
 	background-color: brown;
-	opacity: 0.9;
-	width: 1250px;
+	color: white;
+	position: relative;
+	bottom: 10px;
+	font-size: 15px;
 	padding: 10px;
 }
 
-.logo, ul, li, p {
-	display: inline;
+.navbar ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
-li {
-	padding-left: 15px;
+.navbar li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.navbar li a {
+	color: white;
+	text-decoration: none;
+	padding: 10px 20px;
+}
+
+.navbar li a:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.navbar li a.active {
+	color: white;
+	text-decoration: underline;
+}
+
+.navbar li a.active:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+
+.modal-content {
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+	color: black;
+	border-bottom: none;
+
+}
+
+.modal-title {
+	font-size: 1.25rem;
+}
+
+.modal-body {
+	padding: 20px;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.form-control {
+	border: 1px solid #ced4da;
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
+}
+
+.form-control:focus {
+	border-color: #80bdff;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+	background-color: brown;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
 	cursor: pointer;
 }
 
-ul {
-	margin-left: 40%;
-	padding-left: 5px;
+.btn-primary:hover {
+	background-color: green;
 }
 
-a {
-	color: gold;
-	text-decoration: none;
+.btn-block {
+	display: block;
+	width: 100%;
 }
+
+.text-center {
+	text-align: center;
+	color: brown;
+}
+
+.mt-2 {
+	margin-top: 2rem;
+}
+
+.mt-2:hover {
+	color: green;
+}
+
+ .footer {
+        background-color: brown;
+         opacity:0.8;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
 </style>
 
 </head>
 <body>
-    
-      <header>
-            <nav>
-                <img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
-               <p style="color:white;font-size:300%;font-weight: 100;padding-left:100px; font-style:italic;">EB FUSION EB SERVICES AND ITS PAYMENT</p>
+
+		<nav class="navbar-nav">
+			<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
+			<p id="para">EB FUSION EB SERVICES AND ITS PAYMENT</p>
+
+		</nav>
+		<nav class="navbar">
 			<ul>
 				<li><a class="buttons-atag active" th:href="@{/}">Home</a></li>
 				<li><a th:href="@{/}">About Us</a></li>
 				<li><a th:href="@{/}">Contact Us</a></li>
-				<li><a th:href="@{/LogIn}">SignIn</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#loginModal">SignIn</a></li>
 				<li><a th:href="@{/UserRegistration}">SignUp</a></li>
 			</ul>
 		</nav>
-        </header> 
+	
+
+
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+		aria-labelledby="loginModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="loginModalLabel">Log In</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/Login}" method="post">
+						<div class="form-group">
+							<label for="emailId">Email Id</label> <input type="email"
+								class="form-control" id="emailId" name="emailId"
+								placeholder="Enter your Email Id"
+								pattern="[a-z0-9._%+-]+@[a-z0-9.-]+[/.][a-z]{2,}$" required>
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label> <input type="password"
+								class="form-control" id="password" name="password"
+								placeholder="Enter your Password"
+								pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+								required>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block" onclick="validation()">Submit</button>
+						<a href="UserRegistration" class="d-block text-center mt-2">or
+							register</a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<div class="footer">
+    <p>&copy; 2024 EB FUSION. All Rights Reserved.</p>
+</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

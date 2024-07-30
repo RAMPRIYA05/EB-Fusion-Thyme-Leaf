@@ -6,6 +6,7 @@
 <link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
 <link rel="stylesheet" href="/css/title.css">
 <link rel="stylesheet" href="/css/table.css">
+<link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css" />
 <style>
 * {
 	margin: 0;
@@ -22,6 +23,29 @@ h4 {
 	margin-top: 31px;
 	text-align: center;
 }
+
+.slick-header-column {
+    background-color:brown; 
+    color: white; 
+    font-weight: bold; 
+    text-align: center; 
+ height:30px !important;
+}
+
+
+.slick-cell {
+    padding: 8px; 
+    text-align: left;  
+}
+
+.slick-row:nth-child(even) {
+    background-color: white; 
+}
+
+.slick-row {
+    background-color: peachpuff; 
+}
+
 </style>
 
 </head>
@@ -80,7 +104,7 @@ h4 {
 			</ul>
 		</nav>
 	</header>
-	<h2>Customer Connection Details</h2>
+	 <h2>Customer Connection Details</h2>
 
 	<form action="/searchConnection" method="get">
 		<h4>
@@ -103,6 +127,7 @@ h4 {
 				<th scope="col">State</th>
 				<th scope="col">Address Proof</th>
 				<th scope="col">Enter Bill Amount</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -114,12 +139,15 @@ h4 {
 				<td th:text="${obj.address}"></td>
 				<td th:text="${obj.district}"></td>
 				<td th:text="${obj.state}"></td>
-				<td><img class="table-image"
-					th:src="'data:image/jpeg;base64,' + ${obj.customerAddressProof}"
-					alt="Address Proof Image"> <br> <a
-					href="assets/addressProof.jpg"><button>View</button></a></td>
-				<td>
+                  <td>
+				    <form th:action="@{/ImageAddress}">
+				    <input type="hidden" id="emailId" name="emailId" th:value="${obj.emailId}">
+				    <input type="hidden" id="serviceNumber" name="serviceNumber" th:value="${obj.serviceNumber}">
+				    <button>View</button>
+				    </form>
+				</td>
 
+                   <!--  <td>
 					<form action="/BillForm">
 						<input type="hidden" name="emailId" th:value="${obj.emailId}">
 						<input type="hidden" name="serviceNumber"
@@ -128,28 +156,164 @@ h4 {
 							type="hidden" name="serviceType" th:value="${obj.serviceType}">
 
 
-						<!--  <button th:if="${obj.billEnteredDate == null or #temporaldifference(obj.billEnteredDate, obj.readingTakenDate) gt 60}" type="submit">Enter Customer Bill</button>
-                        <button th:if="${obj.billEnteredDate != null and #temporaldifference(obj.billEnteredDate, obj.readingTakenDate) le 60}" type="button" disabled>Enter Customer Bill</button>
+						 
                    
-                   
-                 <th:block th:with="currentDate=${T(java.time.LocalDate).now()}, 
-                                            readingTakenDate=${T(java.time.LocalDate).parse(obj.readingTakenDate)}, 
-                                            difference=${T(java.time.temporal.ChronoUnit).DAYS.between(readingTakenDate, currentDate)}">
-                           
-                            <button th:if="${obj.billEnteredDate == null and difference ge 60}" type="submit">Enter Customer Bill</button>
-                            <button th:if="${obj.billEnteredDate != null or difference lt 60}" type="button" disabled>Bill Entered</button>
-                        </th:block> 
-                    -->
 
 						<button type="submit">Enter Customer Bill</button>
 					</form>
-				</td>
+				</td> -->
+				
+				
+				<td>
+    <form th:action="@{/BillForm}" method="post">
+        <input type="hidden" name="emailId" th:value="${obj.emailId}">
+        <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">
+        <input type="hidden" name="address" th:value="${obj.address}">
+        <input type="hidden" name="serviceType" th:value="${obj.serviceType}">
+        <button type="submit" th:disabled="${obj.canEnterBill == null or !obj.canEnterBill}">Enter Customer Bill</button>
+    </form>
+</td>
+				
 			</tr>
 
 			<tr th:if="${#lists.isEmpty(list)}">
 				<td colspan="8">No records found.</td>
 			</tr>
 		</tbody>
-	</table>
+	</table> 
+	
+	
+	<!-- <h2>Customers Approved Connection</h2> 
+    <h4>Search:
+    <input type="text" id="searchInput"></h4><br>
+    <div id="myGrid" style="height: 800px;"></div>
+    <script th:src="@{/lib/jquery-1.7.min.js}"></script>
+    <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+    <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+    <script th:src="@{/lib/slick.formatters.js}"></script>
+    <script th:src="@{/lib/slick.core.js}"></script>
+    <script th:src="@{/lib/slick.dataview.js}"></script>
+    <script th:src="@{/lib/slick.grid.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            var columns = [
+                
+                { id: "emailId", name: "Email Id", field: "emailId",width: 100,sortable:true},
+                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",width: 60,sortable:true  },
+                { id: "serviceType", name: "Service Type", field: "serviceType" ,width: 50,sortable:true},
+                { id: "address", name: "Address", field: "address",width: 130,sortable:true },
+                { id: "district", name: "District", field: "district" ,width: 50,sortable:true},
+                { id: "state", name: "State", field: "state" ,width: 50,sortable:true},
+               
+                    {
+                        id: "view",
+                        name: "Address Proof",
+                        field: "view",
+                        width: 50,
+                        formatter: viewButtonFormatter
+                    },
+                
+                    {
+                        id: "enterBill",
+                        name: "Enter Customer Bill",
+                        field: "enterBill",
+                        width: 70,
+                        formatter: enterBillButtonFormatter
+                    }
+                ];
+
+
+                
+           
+
+            var options = {
+                enableCellNavigation: true,
+                enableColumnReorder: false,
+                forceFitColumns: true,
+                rowHeight: 35,
+                enableSorting: true
+            };
+
+            // Inject Thymeleaf data into JavaScript variable
+            var data = /*[[${list}]]*/ [];
+
+            // Initialize SlickGrid
+            var grid = new Slick.Grid("#myGrid", data, columns, options);
+            grid.onSort.subscribe(function (e, args) {
+                var field = args.sortCol.field;
+                data.sort(function (a, b) {
+                    var result = 
+                        a[field] > b[field] ? 1 :
+                        a[field] < b[field] ? -1 :
+                        0;
+                    return args.sortAsc ? result : -result;
+                });
+                grid.invalidate();
+                grid.render();
+            });
+            
+            
+            
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                filteredData = data.filter(function(item) {
+                    return Object.values(item).some(function(value) {
+                        return String(value).toLowerCase().includes(searchTerm);
+                    });
+                });
+                grid.setData(filteredData);
+                grid.invalidate();
+                grid.render();
+            });
+            
+            
+            
+            
+            function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+                return '<form action="/ImageAddress" method="get">' +
+                       '<input type="hidden" name="emailId" value="' + dataContext.emailId + '">' +
+                       '<input type="hidden" name="serviceNumber" value="' + dataContext.serviceNumber + '">' +
+                       '<button type="submit">View</button>' +
+                       '</form>';
+            }
+
+            
+            function enterBillButtonFormatter(row, cell, value, columnDef, dataContext) {
+                return '<form action="/BillForm" method="post">' +
+                       '<input type="hidden" name="emailId" value="' + dataContext.emailId + '">' +
+                       '<input type="hidden" name="serviceNumber" value="' + dataContext.serviceNumber + '">' +
+                       '<input type="hidden" name="address" value="' + dataContext.address + '">' +
+                       '<input type="hidden" name="serviceType" value="' + dataContext.serviceType + '">' +
+                       '<button type="submit">Enter Customer Bill</button>' +
+                       '</form>';
+            }
+
+           
+
+            function submitBillForm(emailId, serviceNumber, address, serviceType) {
+                $.ajax({
+                    url: '/BillForm',
+                    type: 'POST',
+                    data: {
+                        emailId: emailId,
+                        serviceNumber: serviceNumber,
+                        address: address,
+                        serviceType: serviceType
+                    },
+                    success: function(response) {
+                        // Handle success
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                    }
+                });
+            }
+
+            
+            
+        });
+    </script>
+	 -->
+	
 </body>
 </html>

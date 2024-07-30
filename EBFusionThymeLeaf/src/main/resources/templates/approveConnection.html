@@ -6,6 +6,7 @@
 <link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
 <link rel="stylesheet" href="/css/title.css">
 <link rel="stylesheet" href="/css/table.css">
+<link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css" />
 <style>
 * {
 	margin: 0;
@@ -21,6 +22,31 @@ h2 {
 h4 {
 	margin-top: 31px;
 	text-align: center;
+}
+
+.slick-header-column {
+    background-color:brown; 
+    color: white; 
+    font-weight: bold; 
+    text-align: center; 
+ height:30px !important;
+}
+
+
+.slick-cell {
+    padding: 8px; 
+    text-align: left;  
+    height: 60px !important;
+}
+
+.slick-row:nth-child(even) {
+    background-color: white; 
+    height: 60px !important;
+}
+
+.slick-row {
+    background-color: peachpuff; 
+     height: 60px !important;
 }
 
 </style>
@@ -72,7 +98,7 @@ h4 {
         </nav>
     </header>
 
-    <h2>Customers applied for new Connection</h2>
+    <!-- <h2>Customers applied for new Connection</h2>
 
     <form action="/searchAppliedConnection" method="get"> 
         <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" id="emailId" required></h4>
@@ -86,8 +112,9 @@ h4 {
                     <th scope="col">Address</th>
                     <th scope="col">District</th>
                     <th scope="col">State</th>
-                    <th scope="col">Approve</th>
                     <th scope="col">Address Proof</th>
+                    <th scope="col">Approve</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -98,31 +125,183 @@ h4 {
                     <td th:text="${obj.address}"></td>
                     <td th:text="${obj.district}"></td>
                     <td th:text="${obj.state}"></td>
-                    <td>
-                    <form action="/customerConnection" method="get">                       
-                            <select id="connectionStatus" name="ConnectionStatus" required>
-                                <option value="" disabled selected>Select your Status</option>
-                                <option value="Approved">Approved</option>
-                               <!--  <option value="Rejected">Rejected</option>                 -->
-                            </select>
-                            <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">                     
-                            <button onclick="validateForm()" type="submit">Submit</button>
-                      </form>
-                    </td>
-                  <td>
+                     <td>
 				    <form th:action="@{/ImageAddress}">
 				    <input type="hidden" id="emailId" name="emailId" th:value="${obj.emailId}">
 				    <input type="hidden" id="serviceNumber" name="serviceNumber" th:value="${obj.serviceNumber}">
 				    <button>View</button>
 				    </form>
 				</td>
+                    <td>
+                    <form action="/customerConnection" method="get">                       
+                            <select id="connectionStatus" name="ConnectionStatus" required>
+                                <option value="" disabled selected>Select your Status</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>                
+                            </select>
+                            <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">                     
+                            <button onclick="validateForm()" type="submit">Submit</button>
+                      </form>
+                    </td>
+                 
                 </tr>
                 <tr th:if="${#lists.isEmpty(list)}">
                     <td colspan="8">No records found.</td>
                 </tr>
             </tbody>
-        </table>
-<script type="text/javascript">
+        </table> -->
+        
+        
+        
+        <h2>Customers applied for new Connection</h2> 
+    <h4>Search:
+    <input type="text" id="searchInput"></h4><br>
+    <div id="myGrid" style="height: 800px;"></div>
+    
+    <div id="noRecordsMessage" style="display: none; text-align: center; margin-top: 20px;">
+        No records found
+    </div>
+    
+    <script th:src="@{/lib/jquery-1.7.min.js}"></script>
+    <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+    <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
+    <script th:src="@{/lib/slick.formatters.js}"></script>
+    <script th:src="@{/lib/slick.core.js}"></script>
+    <script th:src="@{/lib/slick.dataview.js}"></script>
+    <script th:src="@{/lib/slick.grid.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            var columns = [
+                
+                { id: "emailId", name: "Email Id", field: "emailId",width: 70,sortable:true},
+                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",width: 60,sortable:true  },
+                { id: "serviceType", name: "Service Type", field: "serviceType" ,width: 50,sortable:true},
+                { id: "address", name: "Address", field: "address",width: 130,sortable:true },
+                { id: "district", name: "District", field: "district" ,width: 50,sortable:true},
+                { id: "state", name: "State", field: "state" ,width: 40,sortable:true},
+               
+                    {
+                        id: "view",
+                        name: "Address Proof",
+                        field: "view",
+                        width: 50,
+                        formatter: viewButtonFormatter
+                    },
+                    {
+                        id: "connectionStatus",
+                        name: "Connection Status",
+                        field: "connectionStatus",
+                        formatter: connectionStatusFormatter
+                    }
+                ];
+
+
+                
+           
+
+            var options = {
+                enableCellNavigation: true,
+                enableColumnReorder: false,
+                forceFitColumns: true,
+                rowHeight: 35,
+                enableSorting: true
+            };
+
+            // Inject Thymeleaf data into JavaScript variable
+            var data = /*[[${list}]]*/ [];
+
+            // Initialize SlickGrid
+            var grid = new Slick.Grid("#myGrid", data, columns, options);
+            updateNoRecordsMessage(data.length === 0);
+            
+            grid.onSort.subscribe(function (e, args) {
+                var field = args.sortCol.field;
+                data.sort(function (a, b) {
+                    var result = 
+                        a[field] > b[field] ? 1 :
+                        a[field] < b[field] ? -1 :
+                        0;
+                    return args.sortAsc ? result : -result;
+                });
+                grid.invalidate();
+                grid.render();
+                updateNoRecordsMessage(data.length === 0);
+            });
+            
+            
+            
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                filteredData = data.filter(function(item) {
+                    return Object.values(item).some(function(value) {
+                        return String(value).toLowerCase().includes(searchTerm);
+                    });
+                });
+                grid.setData(filteredData);
+                grid.invalidate();
+                grid.render();
+                updateNoRecordsMessage(filteredData.length === 0);
+            });
+            
+            function updateNoRecordsMessage(noRecords) {
+                if (noRecords) {
+                    $("#noRecordsMessage").show();
+                    $("#myGrid").show();
+                } else {
+                    $("#noRecordsMessage").hide();
+                    $("#myGrid").show();
+                }
+            }
+
+            function viewButtonFormatter(row, cell, value, columnDef, dataContext) {
+                return '<form action="/ImageAddress" method="get">' +
+                       '<input type="hidden" name="emailId" value="' + dataContext.emailId + '">' +
+                       '<input type="hidden" name="serviceNumber" value="' + dataContext.serviceNumber + '">' +
+                       '<button type="submit">View</button>' +
+                       '</form>';
+            }
+
+            
+          
+            
+            function connectionStatusFormatter(row, cell, value, columnDef, dataContext) {
+                return '<form action="/customerConnection" method="get" id="form_' + row + '">' +
+                       '<select id="connectionStatus_' + row + '" name="ConnectionStatus" required>' +
+                       '<option value="" disabled selected>Select your Status</option>' +
+                       '<option value="Approved">Approved</option>' +
+                       '</select>' +
+                       '<input type="hidden" name="serviceNumber" value="' + dataContext.serviceNumber + '">' +
+                       '<button onclick="return validateForm(' + row + ')" type="submit">Submit</button>' +
+                       '</form>';
+            }
+
+            function validateForm(row) {
+                var form = document.getElementById('form_' + row);
+                var status = document.getElementById('connectionStatus_' + row).value;
+                if (status === "") {
+                    alert("Please select a status.");
+                    return false; 
+                }
+                if (status === "Approved") {
+                    return true; 
+                }
+              
+                alert("Please select 'Approved' to submit.");
+                return false;
+            }
+
+
+
+            
+            
+        });
+    </script>
+	
+        
+   
+        
+        
+<!-- <script type="text/javascript">
 function validateForm() {
 	var connectionStatus = document.getElementById("connectionStatus").value;
 
@@ -133,7 +312,7 @@ function validateForm() {
 
 	return true;
 }
-
+ -->
 
 </script>
 </body>

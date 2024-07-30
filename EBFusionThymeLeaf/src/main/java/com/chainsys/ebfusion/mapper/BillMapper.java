@@ -19,6 +19,7 @@ public class BillMapper implements RowMapper<Bill> {
 	    String dueDate=rs.getString("due_date");
 	    double amount=rs.getDouble("amount");
 	    String billStatus=rs.getString("bill_status");
+	  
 	    
 	    bill.setId(id);
 	    bill.setEmailId(emailId);
@@ -30,6 +31,7 @@ public class BillMapper implements RowMapper<Bill> {
 	    bill.setDueDate(dueDate);
 	    bill.setAmount(amount);
 	    bill.setBillStatus(billStatus);
+	   
 		return bill;
 	}
 }

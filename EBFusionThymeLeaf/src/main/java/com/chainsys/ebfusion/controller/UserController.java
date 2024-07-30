@@ -1,7 +1,5 @@
 package com.chainsys.ebfusion.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -10,11 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
 
 import com.chainsys.ebfusion.dao.UserDAO;
 
 import com.chainsys.ebfusion.model.User;
+import com.chainsys.ebfusion.service.UserService;
 import com.chainsys.ebfusion.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +24,8 @@ public class UserController {
 	@Autowired
     UserDAO userDAO;
 	JdbcTemplate jdbcTemplate;
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	Validation validate;
@@ -83,7 +84,7 @@ public class UserController {
 			
 			
 		if(Boolean.FALSE.equals(validate.nameValidation(name, model)) || Boolean.FALSE.equals(validate.emailIdValidation(emailId, model)) || Boolean.FALSE.equals(validate.passwordValidation(password, model)) || Boolean.FALSE.equals(validate.phoneNumberValidation(phoneNumber, model)) || Boolean.FALSE.equals(validate.aadhaarNumberValidation(aadhaarNumber, model))){   
-		userDAO.saveDetails(user);
+		userService.saveUser(user);
 		return "logIn";
 		}
 		else {
@@ -99,25 +100,25 @@ public class UserController {
 			HttpSession session) {
 		try {
 			if (emailId.equals("ram5@eb.com")) {
-				String adminPassword = userDAO.getPassword(emailId);
+				String adminPassword = userService.getPassword(emailId);
 				if (adminPassword != null && adminPassword.equals(password)) {
 					session.setAttribute("AdminEmailId", emailId);
 					return "adminWelcomePage";
 				} else {
-					return "logIn";
+					return "home";
 				}
 			} else {
-				String userEmail = userDAO.getUserEmailId(emailId);
+				String userEmail = userService.getUserEmailId(emailId);
 				if (userEmail != null) {
-					String userPassword = userDAO.getPassword(emailId);
+					String userPassword = userService.getPassword(emailId);
 					if (userPassword != null && userPassword.equals(password)) {
 						session.setAttribute("UserEmailId", emailId);
 						return "userWelcomePage";
 					} else {
-						return "logIn";
+						return "home";
 					}
 				} else {
-					return "logIn";
+					return "home";
 				}
 			}
 		} catch (Exception e) {
@@ -126,31 +127,32 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/listOfUsers")
-	public String getAllUser(Model model)
-	{		
-		List<User> list=userDAO.listUsers();
-		model.addAttribute("list",list);
-		return "registerTable";	
-	}
+	 @GetMapping("/listOfUsers")
+	    public String getAllUser(Model model) {        
+	         userService.getAllUsers(model);
+	     
+	        return "registerTable";
+	    }
 	
-	@GetMapping("/UserProfile")
-	public String getUser(Model model,HttpSession session)
-	{ 
-		
-		String email=(String)session.getAttribute("UserEmailId");
-		
-		List<User> list=userDAO.getUser(email);
-		model.addAttribute("list",list);
-		return "userProfile";	
-	}
+	 @GetMapping("/UserProfile")
+	    public String getUser(Model model, HttpSession session) { 
+	        
+	        String email = (String) session.getAttribute("UserEmailId");
+	        if (email != null) {
+	           userService.getUserProfile(email,model);
+	           
+	        } else {
+	            model.addAttribute("error", "No user found in session.");
+	        }
+	        return "userProfile";    
+	    }
 	
 	@GetMapping("/AdminProfile")
 	public String getAdmin(Model model,HttpSession session)
 	{		
 		String emailID=(String)session.getAttribute("AdminEmailId");
-		List<User> list=userDAO.getAdmin(emailID);
-		model.addAttribute("list",list);
+		userService.getAdminByEmail(emailID,model);
+		
 		return "adminProfile";	
 	}
 	
@@ -182,9 +184,9 @@ public class UserController {
 			user.setAadhaarNumber(aadhaarNumber);
 			user.setEmailId(emailId);
 			
-			userDAO.adminUpdateUserDetails(name,phoneNumber,aadhaarNumber,emailId);
-			List<User> list=userDAO.listUsers();
-			model.addAttribute("list",list);
+			userService.updateUserDetails(user);
+			userService.listUsers(model);
+			
 			return "registerTable";
 		}
 	@GetMapping("/UpdateAdmin")
@@ -194,9 +196,9 @@ public class UserController {
 		user.setPhoneNumber(phoneNumber);
 		user.setAadhaarNumber(aadhaarNumber);
 		user.setEmailId(emailId);
-		userDAO.update(user);
-		List<User> list=userDAO.getAdmin(emailId);
-		model.addAttribute("list",list);
+		userService.updateUser(user);
+		userService.getAdmin(emailId,model);
+		
 		return "adminProfile";
 	}
 	
@@ -205,9 +207,9 @@ public class UserController {
 	{
 		User user=new User();
 		user.setEmailId(emailId);
-		userDAO.delete(user);
-		List<User> list=userDAO.getAdmin(emailId);
-		model.addAttribute("list",list);
+		 userService.deleteUser(user);
+		userService.getAdmin(emailId,model);
+		
 		return "adminProfile";
 	}
 	
@@ -217,9 +219,9 @@ public class UserController {
 		User user=new User();
 		user.setEmailId(emailId);
 		
-		userDAO.delete(user);
-		List<User> list=userDAO.listUsers();
-		model.addAttribute("list",list);
+		userService.deleteUser(user);
+		userService.listUsers(model);
+	
 		return "registerTable";
 	}
 	
@@ -230,9 +232,9 @@ public class UserController {
 		user.setPhoneNumber(phoneNumber);
 		user.setAadhaarNumber(aadhaarNumber);
 		user.setEmailId(emailId);
-		userDAO.update(user);
-		List<User> list=userDAO.getUser(emailId);
-		model.addAttribute("list",list);
+		userService.updateUser(user);
+		userService.getUserProfile(emailId,model);
+	
 		return "userProfile";
 	}
 	
@@ -241,17 +243,17 @@ public class UserController {
 	{
 		User user=new User();
 		user.setEmailId(emailId);
-		userDAO.delete(user);
-		List<User> list=userDAO.getUser(emailId);
-		model.addAttribute("list",list);
+		userService.deleteUser(user);
+		userService.getUserProfile(emailId,model);
+		
 		return "userProfile";
 	}
 	
 	@GetMapping("/searchUser")
 	public String searchDetails(@RequestParam("emailId")String emailId,Model model)
 	{		
-		List<User> list=userDAO.searchUser(emailId);
-		model.addAttribute("list",list);
+		userService.searchUser(emailId,model);
+	
 		return "registerTable";
 	}
 	
@@ -261,4 +263,7 @@ public class UserController {
 		session.invalidate();
 		return "home";
 	}
+	
+	
+	
 }

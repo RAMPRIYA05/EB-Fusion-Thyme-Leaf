@@ -18,6 +18,16 @@ public class Customer {
 	byte[] addressProof;
 	String connectionStatus;
 	String customerAddressProof;
+	boolean canEnterBill;
+	
+	
+	
+	public boolean isCanEnterBill() {
+		return canEnterBill;
+	}
+	public void setCanEnterBill(boolean canEnterBill) {
+		this.canEnterBill = canEnterBill;
+	}
 	public String getEmailId() {
 		return emailId;
 	}
@@ -83,9 +93,8 @@ public class Customer {
 		return "Customer [emailId=" + emailId + ", serviceNumber=" + serviceNumber + ", serviceType=" + serviceType
 				+ ", address=" + address + ", district=" + district + ", state=" + state + ", addressProof="
 				+ Arrays.toString(addressProof) + ", connectionStatus=" + connectionStatus + ", customerAddressProof="
-				+ customerAddressProof + "]";
+				+ customerAddressProof + ", canEnterBill=" + canEnterBill + "]";
 	}
-	
 	
 		
 	
