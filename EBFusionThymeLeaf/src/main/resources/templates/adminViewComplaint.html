@@ -6,7 +6,7 @@
 <link rel="icon" type="image/x-icon" href="assets/ebLogo.jpg">
 <link rel="stylesheet" href="/css/title.css">
 <link rel="stylesheet" href="/css/table.css">
-<!-- <link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css" /> -->
+<link rel="stylesheet" th:href="@{/lib/slick.grid.css}" type="text/css" /> 
 <style>
 * {
 	margin: 0;
@@ -28,11 +28,11 @@ h4 {
 </head>
 <body>
 	<header>
-		<nav class="navbar-nav">
+		<nav class="navbar-nav" aria-label="Site Header Navigation">
 			<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
 			<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
 		</nav>
-		<nav class="navbar">
+		<nav class="navbar" aria-label="Main Navigation Menu">
 			<ul>
 				<li><a th:href="@{/AdminWelcomePage}">Home</a></li>
 				<li><a th:href="@{/AdminAbout}">About Us</a></li>
@@ -107,73 +107,7 @@ h4 {
  
  
  
- <!-- <h2>Pending Complaints</h2>
- 
- <h4>Search:
-<input type="text" id="searchInput"></h4>
-    <div id="myGrid" style="height: 400px;"></div>
-    <script th:src="@{/lib/jquery-1.7.min.js}"></script>
-    <script th:src="@{/lib/jquery-ui-1.8.16.custom.min.js}"></script>
-    <script th:src="@{/lib/jquery.event.drag-2.2.js}"></script>
-    <script th:src="@{/lib/slick.formatters.js}"></script>
-    <script th:src="@{/lib/slick.core.js}"></script>
-    <script th:src="@{/lib/slick.dataview.js}"></script>
-    <script th:src="@{/lib/slick.grid.js}"></script>
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            var columns = [
-                { id: "complaintId", name: "Complaint Id", field: "complaintId", width: 100,sortable:true  },
-                { id: "emailId", name: "Email Id", field: "emailId"},
-                { id: "serviceNumber", name: "Service Number", field: "serviceNumber",sortable:true  },
-                { id: "description", name: "Description", field: "description" },
-                { id: "complaintStatus", name: "Complaint Status", field: "complaintStatus" }
-               
-            ];
 
-            var options = {
-                enableCellNavigation: true,
-                enableColumnReorder: false,
-                forceFitColumns: true,
-                rowHeight: 35,
-                enableSorting: true
-            };
-
-            // Inject Thymeleaf data into JavaScript variable
-            var data = /*[[${list}]]*/ [];
-
-            // Initialize SlickGrid
-            var grid = new Slick.Grid("#myGrid", data, columns, options);
-            grid.onSort.subscribe(function (e, args) {
-                var field = args.sortCol.field;
-                data.sort(function (a, b) {
-                    var result = 
-                        a[field] > b[field] ? 1 :
-                        a[field] < b[field] ? -1 :
-                        0;
-                    return args.sortAsc ? result : -result;
-                });
-                grid.invalidate();
-                grid.render();
-            });
-            
-            
-            
-            $('#searchInput').on('input', function() {
-                var searchTerm = $(this).val().toLowerCase();
-                filteredData = data.filter(function(item) {
-                    return Object.values(item).some(function(value) {
-                        return String(value).toLowerCase().includes(searchTerm);
-                    });
-                });
-                grid.setData(filteredData);
-                grid.invalidate();
-                grid.render();
-            });
-            
-        });
-    </script>
- 
-  -->
  
 </body>
 </html>

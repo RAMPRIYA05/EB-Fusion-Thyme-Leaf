@@ -23,11 +23,11 @@ h2 {
 </head>
 <body>
 	<header>
-    <nav class="navbar-nav">
+    <nav class="navbar-nav" aria-label="Site Header Navigation">
         <img class="logo" src="assets/ebLogo.jpg" alt="Logo">
         <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
     </nav>
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Main Navigation Menu">
         <ul>
             <li><a th:href="@{/UserWelcomePage}">Home</a></li>
             <li><a th:href="@{/About}">About Us</a></li>
@@ -72,12 +72,12 @@ h2 {
 <table border="1">
     <thead>
     <tr>
-       <!--  <th scope="col">Email Id</th> -->
+      
         <th scope="col">Service Number</th>
         <th scope="col">Address</th>
         <th scope="col">Reading Units</th>
         <th scope="col">Bill Month</th>
-        <!-- <th scope="col">Due Date</th> -->
+     
         <th scope="col">Service Type</th>
         <th scope="col">Amount</th>
         <th scope="col">Bill Status</th>
@@ -86,12 +86,12 @@ h2 {
     <tbody>
     
     <tr th:each="obj : ${list}">
-        <!-- <td th:text="${obj.emailId}"></td> -->
+       
         <td th:text="${obj.serviceNumber}"></td>
         <td th:text="${obj.address}"></td>
         <td th:text="${obj.readingUnits}"></td>
         <td th:text="${obj.readingTakenDate}"></td>
-       <!--  <td th:text="${obj.dueDate}"></td> -->
+      
         <td th:text="${obj.serviceType}"></td>
         <td th:text="${obj.amount}"></td>
         <td th:text="${obj.billStatus}"></td>

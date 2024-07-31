@@ -55,11 +55,11 @@ h4 {
 <body>
 
 	<header>
-		<nav class="navbar-nav">
+		 <nav class="navbar-nav" aria-label="Site Header Navigation">
 			<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
 			<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
 		</nav>
-		<nav class="navbar">
+		 <nav class="navbar" aria-label="Main Navigation Menu">
 			<ul>
 				<li><a th:href="@{/AdminWelcomePage}">Home</a></li>
 				<li><a th:href="@{/AdminAbout}">About Us</a></li>
@@ -88,39 +88,6 @@ h4 {
 	</header>
 
 
-	<!-- <h2>Rectified Complaint</h2>
-
-	<form action="/searchRectifiedComplaint" method="get">
-		<h4>
-			Search: <input type="search" placeholder="Enter your Search EmailId"
-				name="emailId" id="emailId" required>
-		</h4>
-	</form>
-	<br>
-
-	<table border="1">
-		<thead>
-			<tr>
-				<th>Complaint Id</th>
-				<th>Email Id</th>
-				<th>Service Number</th>
-				<th>Description</th>
-				<th>Complaint Status</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="complaint : ${list}">
-				<td th:text="${complaint.complaintId}"></td>
-				<td th:text="${complaint.emailId}"></td>
-				<td th:text="${complaint.serviceNumber}"></td>
-				<td th:text="${complaint.description}"></td>
-				<td th:text="${complaint.complaintStatus}"></td>
-			</tr>
-			<tr th:if="${#lists.isEmpty(list)}">
-				<td colspan="5">No records found.</td>
-			</tr>
-		</tbody>
-	</table> -->
 	 <h2>Rectified Complaints</h2>
  
  <h4>Search:

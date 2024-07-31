@@ -70,10 +70,10 @@ a:hover {
 
 	<form action="/updateUser" method="get">
 		<h2>Update Profile</h2>
-		<input type="text" placeholder="Enter your new name" name="name" id="name" pattern="^[A-Za-z]+$" th:value="${param.name}" readonly><br>		
+		<input type="text" placeholder="Enter your new name" name="name" id="name" pattern="^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z])[A-Za-z\\\\s]+$" th:value="${param.name}" readonly><br>		
 	    <input type="email" name="emailId" id="emailId" th:value="${param.emailId}" readonly><br> 		
-		<input type="tel" name="phoneNumber" id="phoneNumber" pattern="[0-9]{10}" th:value="${param.phoneNumber}" required><br>		
-		<input type="text" name="aadhaarNumber" id="aadhaarNumber"	pattern="^[2-9][0-9]{3}\s[0-9]{4}\s[0-9]{4}$" th:value="${param.aadhaarNumber}" readonly><br>
+		<input type="tel" name="phoneNumber" id="phoneNumber" pattern="^[7-9]\\\\d{9}$" th:value="${param.phoneNumber}" required><br>		
+		<input type="text" name="aadhaarNumber" id="aadhaarNumber"	pattern="^(?!0)\\d{4}\\s\\d{4}\\s\\d{4}$" th:value="${param.aadhaarNumber}" readonly><br>
 		<button type="submit" onclick="validation()">Update</button>
 	</form>
 

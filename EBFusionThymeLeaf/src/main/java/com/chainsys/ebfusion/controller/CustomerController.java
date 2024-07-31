@@ -55,14 +55,22 @@ public class CustomerController {
 		customer.setServiceNumber(serviceNumber);
 		customer.setConnectionStatus("applied");
 		
-		customerService.findLatestBillByServiceNumber(customer);
 		
-        customerService.applyConnection(customer);
 		
+		Bill latestBill = userDAO.findLatestBillByServiceNumber(serviceNumber);
+        boolean canEnterBill = isBillEntryAllowed(latestBill);
+        customer.setCanEnterBill(canEnterBill);
+		
+		userDAO.applyConnection(customer);
 	
         String email=(String)session.getAttribute("UserEmailId");
-		customerService.readApplyConnection(email,model);
-			
+		List<Customer> list=userDAO.readApplyConnection(email);
+		for(Customer customer1:list)
+		{ 
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer1.getAddressProof());
+             customer1.setCustomerAddressProof(base64AddressProof);
+		}
+		model.addAttribute("list",list);	
 		  return "applyConnectionTable";
 	        }
 	        else
@@ -72,6 +80,10 @@ public class CustomerController {
 		
 	}
 	
+	
+	
+	
+
 	@RequestMapping("/ApplyNewConnection")
 	public String home()
 	{
@@ -116,29 +128,40 @@ public class CustomerController {
 	
 	@GetMapping("/allApprovedConnection")
 	public String allApprovedConnection(Model model, Long serviceNumber) {
-		 customerService.allApprovedConnection(model);
-		
-		Customer customer=new Customer();
-		customerService.findLatestBillByServiceNumber(customer);
-	
+		List<Customer> list = userDAO.allApprovedConnection();
+		for (Customer customer : list) {
+			String base64AddressProof = Base64.getEncoder().encodeToString(customer.getAddressProof());
+			customer.setCustomerAddressProof(base64AddressProof);
+
+			Bill latestBill = userDAO.findLatestBillByServiceNumber(customer.getServiceNumber());
+
+			boolean isBillEntryAllowed = isBillEntryAllowed(latestBill);
+			customer.setCanEnterBill(isBillEntryAllowed);
+
+		}
+		model.addAttribute("list", list);
 		return "adminViewApprovedConnection";
 	}
 
-	/*
-	 * private boolean isBillEntryAllowed(Bill latestBill) { if (latestBill == null)
-	 * { return true; }
-	 * 
-	 * LocalDate currentDate = LocalDate.now(); LocalDate readingTakenDate =
-	 * LocalDate.parse(latestBill.getReadingTakenDate());
-	 * 
-	 * long daysDifference = ChronoUnit.DAYS.between(readingTakenDate, currentDate);
-	 * 
-	 * 
-	 * if (daysDifference >= 60) { return true; } else { return false; }
-	 * 
-	 * }
-	 */
+	private boolean isBillEntryAllowed(Bill latestBill) {
+		if (latestBill == null) {
+			return true;
+		}
+
+		LocalDate currentDate = LocalDate.now();
+		LocalDate readingTakenDate = LocalDate.parse(latestBill.getReadingTakenDate());
+
+		long daysDifference = ChronoUnit.DAYS.between(readingTakenDate, currentDate);
 		
+		
+		if (daysDifference >= 60) {
+	        return true;
+	    } else {
+	        return false; 
+	    }
+		
+	}
+
 	@GetMapping("/customerConnection")
 	public String customerConnection(@RequestParam("serviceNumber")long serviceNumber,Model model,HttpSession session)
 	{
@@ -167,4 +190,24 @@ public class CustomerController {
 		return "approveConnection";
 	}
 	
+	
+	
+	
+	@GetMapping("/storeServiceTypeCount")
+    public String storeServiceTypeCount(HttpSession session) {
+       
+       
+        return "redirect:/displayServiceTypeCount";
+    }
+
+    @GetMapping("/displayServiceTypeCount")
+    public String displayServiceTypeCount(Model model, HttpSession session) {
+        Integer count = (Integer) session.getAttribute("uniqueServiceTypeCount");
+        if (count != null) {
+            model.addAttribute("uniqueServiceTypeCount", count);
+        } else {
+            model.addAttribute("uniqueServiceTypeCount", "Not available");
+        }
+        return "userWelcomePage"; 
+    }
 }

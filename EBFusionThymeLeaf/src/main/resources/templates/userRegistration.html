@@ -4,7 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="icon" th:href="@{/assets/ebLogo.jpg}" type="image/x-icon">
- <script src="/javascript/register.js"></script>
+<script src="/javascript/register.js"></script>
 
 <style>
 body {
@@ -72,19 +72,22 @@ a:hover {
 		<fieldset>
 			<h2>Registration</h2>
 			Name:<input type="text" placeholder="Enter your name" name="name"
-				id="name" pattern="^[A-Za-z]+$" required><br> <br>Email
-			Id:<input type="email" placeholder="Enter your EmailId"
-				name="emailId" id="emailId"
+				id="name"
+				pattern="^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z])[A-Za-z\\\\s]+$"
+				required><br>
+		   <br>Email Id:<input type="email"
+				placeholder="Enter your EmailId" name="emailId" id="emailId"
 				pattern="[a-z0-9._%+-]+@[a-z0-9.-]+[/.][a-z]{2,}$" required><br>
 			<br>Password:<input type="password"
 				placeholder="Enter your Password" name="password" id="password"
 				pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
-				required><br> <br>Phone Number:<input type="tel"
+				required><br>
+		   <br>Phone Number:<input type="tel"
 				placeholder="Enter your Phone Number" name="phoneNumber"
-				id="phoneNumber" pattern="[0-9]{10}" required><br> <br>Aadhaar
-			Number:<input type="text" placeholder="Enter your Aadhaar Number"
+				id="phoneNumber" pattern="^[7-9]\d{9}$" required><br> 
+			<br>Aadhaar Number:<input type="text" placeholder="Enter your Aadhaar Number"
 				name="aadhaarNumber" id="aadhaarNumber"
-				pattern="^[2-9][0-9]{3}\s[0-9]{4}\s[0-9]{4}$" required><br>
+				pattern="^(?!0)\d{4}\s\d{4}\s\d{4}$" required><br>
 			<br>
 			<button type="submit" onclick="validation()">Register</button>
 

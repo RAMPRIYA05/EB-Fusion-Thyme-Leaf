@@ -22,15 +22,16 @@ body {
 }
 
 .card {
-	margin-left: 65px !important;
+	
 	background-color: #fff;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
-	margin: 20px;
+	margin: 50px;
 	padding: 15px;
 	width: 300px;
 	display: inline-block;
 	vertical-align: top;
+	
 }
 
 .card h3 {
@@ -91,11 +92,11 @@ body {
 </style>
 </head>
 <body>
-	<nav class="navbar-nav">
+	<nav class="navbar-nav" aria-label="Site Header Navigation">
 		<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
 		<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
 	</nav>
-	<nav class="navbar">
+	<nav class="navbar" aria-label="Main Navigation Menu">
 		<ul>
 			<li><a class="active" th:href="@{/AdminWelcomePage}">Home</a></li>
 			<li><a th:href="@{/AdminAbout}">About Us</a></li>
@@ -106,6 +107,45 @@ body {
 		</ul>
 	</nav>
 
+
+	<p>
+		Number of Service types: <span
+			th:text="${session.uniqueServiceTypeCount}"></span>
+	</p>
+	<p>
+		Number of Commercial Service types: <span
+			th:text="${session.commercialServiceTypeCount}"></span>
+	</p>
+	<p>
+		Number of Domestic Service types: <span
+			th:text="${session.domesticServiceTypeCount}"></span>
+	</p>
+
+	<p>
+		Number of Paid Bills: <span th:text="${session.paidBillCount}">0</span>
+	</p>
+
+	<p>
+		Number of UnPaid Bills: <span th:text="${session.unPaidBillCount}">0</span>
+	</p>
+
+	<p>
+		Number of Rectified Complaints: <span
+			th:text="${session.rectifiedCount}">0</span>
+	</p>
+
+	<p>
+		Number of Pending Complaints: <span th:text="${session.pendingCount}">0</span>
+	</p>
+
+    <p>
+		Number of Applied New Connection: <span th:text="${session.appliedNewConnectionCount}">0</span>
+	</p>
+	
+	  <p>
+		Number of Approved Connection: <span th:text="${session.approvedConnectionCount}">0</span>
+	</p>
+	
 	<div class="card">
 		<h3>New Connection Applied Customer</h3>
 		<img src="assets/applied.jpg" alt="New Connection Applied Customer">

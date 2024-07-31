@@ -22,11 +22,11 @@ body {
 }
 
 .card {
-	margin-left: 65px !important;
+	
 	background-color: #fff;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
-	margin: 20px;
+	margin: 50px;
 	padding: 15px;
 	width: 300px;
 	display: inline-block;
@@ -129,11 +129,11 @@ body {
 </head>
 <body>
 
-	<nav class="navbar-nav">
+	<nav class="navbar-nav" aria-label="Site Header Navigation">
 		<img class="logo" th:src="@{/assets/ebLogo.jpg}" alt="Logo">
 		<p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
 	</nav>
-	<nav class="navbar">
+	<nav class="navbar" aria-label="Main Navigation Menu">
 		<ul>
 			<li><a class="active" th:href="@{/UserWelcomePage}">Home</a></li>
 			<li><a th:href="@{/About}">About Us</a></li>
@@ -158,6 +158,8 @@ body {
 			<li><a style="margin-left: 650px;" th:href="@{/logOut}">LogOut</a></li>
 		</ul>
 	</nav>
+
+	<!-- <p>Count Of Pending Complaint: <span th:text="${session.pendingComplaintsCount}"></span></p> -->
 
 	<div class="card">
 		<h3>Apply for new Connection</h3>

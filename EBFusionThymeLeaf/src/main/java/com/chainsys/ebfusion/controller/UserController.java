@@ -1,5 +1,5 @@
 package com.chainsys.ebfusion.controller;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.chainsys.ebfusion.dao.UserDAO;
 
 import com.chainsys.ebfusion.model.User;
+import com.chainsys.ebfusion.service.CustomerService;
 import com.chainsys.ebfusion.service.UserService;
 import com.chainsys.ebfusion.validation.Validation;
 
@@ -26,9 +27,10 @@ public class UserController {
 	JdbcTemplate jdbcTemplate;
 	@Autowired
 	UserService userService;
-	
+	CustomerService customerService;
 	@Autowired
 	Validation validate;
+	
 	@RequestMapping("/home")
 	public String home()
 	{
@@ -74,7 +76,7 @@ public class UserController {
 		 */
 		
 		User user=new User();
-		Validation validate = new Validation();
+		
 		    user.setName(name);
 			user.setEmailId(emailId);
 			user.setPassword(password);
@@ -103,8 +105,38 @@ public class UserController {
 				String adminPassword = userService.getPassword(emailId);
 				if (adminPassword != null && adminPassword.equals(password)) {
 					session.setAttribute("AdminEmailId", emailId);
+					
+					 int count = userDAO.countUniqueServiceTypes();
+					 session.setAttribute("uniqueServiceTypeCount",count);
+				        
+				        int commercialCount = userDAO.countCommercialServiceTypes();
+				        session.setAttribute("commercialServiceTypeCount", commercialCount);
+				        
+				        int domesticCount = userDAO.countDomesticServiceTypes();
+				        session.setAttribute("domesticServiceTypeCount", domesticCount);
+				        
+				        int paidCount = userDAO.countPaidBills();
+				        session.setAttribute("paidBillCount", paidCount);
+				        
+				        int notPaidCount = userDAO.countUnPaidBills();
+				        session.setAttribute("unPaidBillCount", notPaidCount);
+				        
+				        int rectifiedComplaintCount = userDAO.countRectifiedComplaints();
+				        session.setAttribute("rectifiedCount", rectifiedComplaintCount);
+				        
+				        int pendingComplaintCount = userDAO.countPendingComplaints();
+				        session.setAttribute("pendingCount", pendingComplaintCount);
+				        
+				        int appliedConnectionCount = userDAO.countAppliedConnection(); 
+				        session.setAttribute("appliedNewConnectionCount", appliedConnectionCount);
+				       
+				        
+				        int approvedConnectionCount = userDAO.countApprovedConnection(); 
+				        session.setAttribute("approvedConnectionCount", approvedConnectionCount);
+				       
 					return "adminWelcomePage";
-				} else {
+				} 
+				else {
 					return "home";
 				}
 			} else {
@@ -113,6 +145,7 @@ public class UserController {
 					String userPassword = userService.getPassword(emailId);
 					if (userPassword != null && userPassword.equals(password)) {
 						session.setAttribute("UserEmailId", emailId);
+						
 						return "userWelcomePage";
 					} else {
 						return "home";
@@ -123,8 +156,9 @@ public class UserController {
 			}
 		} catch (Exception e) {
 			System.out.println("Exception occurred: " + e.getMessage());
-			return "logIn";
+			return "home";
 		}
+		
 	}
 
 	 @GetMapping("/listOfUsers")

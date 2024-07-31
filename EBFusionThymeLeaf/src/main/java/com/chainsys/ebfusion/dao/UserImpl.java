@@ -1,6 +1,6 @@
 package com.chainsys.ebfusion.dao;
 
-import java.sql.Blob;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +43,15 @@ public class UserImpl implements UserDAO {
 	@Override
 	public String getPassword(String emailId) {
 		String adminPassword = "select password from user where email_id=? and delete_user=0";
-		String password = jdbcTemplate.queryForObject(adminPassword, String.class, emailId);
-		return password;
+		 return jdbcTemplate.queryForObject(adminPassword, String.class, emailId);
+		
 	}
 
 	@Override
 	public String getUserEmailId(String emailId) {
 		String userEmailId = "select email_id from user where email_id=? and (user_type='User') and delete_user=0";
-		String email = jdbcTemplate.queryForObject(userEmailId, String.class, emailId);
-		return email;
+		return jdbcTemplate.queryForObject(userEmailId, String.class, emailId);
+		
 
 	}
 
@@ -157,11 +157,7 @@ public class UserImpl implements UserDAO {
 		return list;
 	}
 	
-	/*
-	 * Blob document = rs.getBlob("address_proof"); if (document != null) { int
-	 * blobLength = (int) document.length(); byte[] blobAsBytes =
-	 * document.getBytes(1, blobLength); customer.setAddressProof(blobAsBytes); }
-	 */
+	
 	
 	@Override
 	public void enterBill(Bill bill) {
@@ -318,7 +314,7 @@ public class UserImpl implements UserDAO {
 	@Override
 	public List<Customer> searchConnection(String emailId) {
 		String retrive = String.format(
-				"SELECT email_id,service_number,service_type,address,district,state,connection_status,address_proof FROM customer_details "
+				"SELECT email_id,service_number,service_type,address,district,state,connection_status,address_proof,can_enter_bill FROM customer_details "
 						+ "WHERE (email_id LIKE '%%%s%%' OR service_number LIKE '%%%s%%' OR service_type LIKE '%%%s%%' OR address LIKE '%%%s%%' OR district LIKE '%%%s%%' OR state LIKE '%%%s%%') ",
 				emailId, emailId, emailId, emailId, emailId, emailId);
 		return jdbcTemplate.query(retrive, new CustomerMapper());
@@ -390,7 +386,54 @@ public class UserImpl implements UserDAO {
 	}
 
 	
+	@Override
+    public int countUniqueServiceTypes() {
+        String sql = "SELECT COUNT(DISTINCT service_type) FROM customer_details";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+	@Override
+	public int countCommercialServiceTypes() {
+	    String sql = "SELECT COUNT(*) FROM customer_details WHERE service_type = 'Commercial'";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public int countDomesticServiceTypes() {
+		String sql = "SELECT COUNT(*) FROM customer_details WHERE service_type = 'Domestic'";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	@Override
+	public int countPaidBills() {
+	    String sql = "SELECT COUNT(*) FROM bill WHERE bill_status = 'Paid'";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	
+	@Override
+	public int countUnPaidBills() {
+	    String sql = "SELECT COUNT(*) FROM bill WHERE bill_status = 'Not Paid'";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+	
+	public int countRectifiedComplaints() {
+	    String sql = "SELECT COUNT(*) FROM complaint_details WHERE complaint_status = 'rectified'";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
 
 	
-	
+	public int countPendingComplaints() {
+	    String sql = "SELECT COUNT(*) FROM complaint_details WHERE complaint_status IN ('processed', 'applied')";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	 public int countAppliedConnection() {
+	        String sql = "SELECT COUNT(*) FROM customer_details WHERE connection_status = 'applied'";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
+	    }
+
+	@Override
+	public int countApprovedConnection() {
+		String sql = "SELECT COUNT(*) FROM customer_details WHERE connection_status = 'approved'";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
 }

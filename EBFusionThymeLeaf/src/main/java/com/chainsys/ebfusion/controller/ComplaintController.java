@@ -100,12 +100,7 @@ public class ComplaintController {
 		return "adminViewComplaint";
 	}
 	
-	/*
-	 * @GetMapping("/searchRectifiedComplaint") public String
-	 * searchRectifiedComplaint(@RequestParam("emailId")String emailId,Model model)
-	 * { List<Complaint> list=userDAO.searchRectified(emailId);
-	 * model.addAttribute("list",list); return "adminRectifiedComplaint.jsp"; }
-	 */
+	
 	
 	
 	

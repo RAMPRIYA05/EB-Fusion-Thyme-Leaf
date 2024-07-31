@@ -55,9 +55,9 @@ button:hover {
         <br>
         Amount (Pay on or before due date): <input type="number" id="amount" name="amount" th:value="${param.amount}" readonly><br>
         <br>
-        Account Number: <input type="number" id="accountNumber" name="accountNumber" pattern="^[0-9]{9,18}$" onkeyup="calculateTotalAmount()" required><br>
+        Account Number: <input type="number" id="accountNumber" name="accountNumber" pattern="^\\d{9,18}$" onkeyup="calculateTotalAmount()" required><br>
         <br>
-        IFSC:<input type="text" id="ifsc" name="ifsc" pattern="^[A-Z]{4}0[A-Z0-9]{6}$" required><br>
+        IFSC:<input type="text" id="ifsc" name="ifsc" pattern="^[A-Z]{4}0[A-Z\d]{6}$" required><br>
         <br>
         Due Date: <input style="width:95%;padding:8px;margin:5px;box-sizing:border-box;" id="dueDate" name="dueDate" th:value="${param.dueDate}" readonly><br>
         <br>

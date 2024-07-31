@@ -45,7 +45,7 @@ button:hover {
 </head>
 <body>
 <form action="/applyComplaint" method="get">
-        <fieldset>
+       
             <h2>Complaint Form</h2>
             <div>
                 Email Id: <input type="email" id="emailId" name="emailId" th:value="${param.emailId}" readonly>
@@ -68,7 +68,7 @@ button:hover {
             </div>
             <br>
             <button type="submit" onclick="validateForm()">Submit</button>
-        </fieldset>
+
     </form>
 </body>
 </html>

@@ -55,11 +55,11 @@ h4 {
 <body>
       
      <header>
-        <nav class="navbar-nav">
+        <nav class="navbar-nav" aria-label="Site Header Navigation">
             <img class="logo" src="assets/ebLogo.jpg" alt="Logo">
             <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
         </nav>
-        <nav class="navbar">
+        <nav class="navbar" aria-label="Main Navigation Menu">
             <ul> 
                 <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
                 <li><a th:href="@{/AdminAbout}">About Us</a></li>
@@ -98,65 +98,12 @@ h4 {
         </nav>
     </header>
 
-    <!-- <h2>Customers applied for new Connection</h2>
-
-    <form action="/searchAppliedConnection" method="get"> 
-        <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" id="emailId" required></h4>
-    </form><br>  
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Email Id</th>
-                    <th scope="col">Service Number</th>
-                    <th scope="col">Service Type</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">District</th>
-                    <th scope="col">State</th>
-                    <th scope="col">Address Proof</th>
-                    <th scope="col">Approve</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="obj : ${list}">
-                    <td th:text="${obj.emailId}"></td>
-                    <td th:text="${obj.serviceNumber}"></td>
-                    <td th:text="${obj.serviceType}"></td>
-                    <td th:text="${obj.address}"></td>
-                    <td th:text="${obj.district}"></td>
-                    <td th:text="${obj.state}"></td>
-                     <td>
-				    <form th:action="@{/ImageAddress}">
-				    <input type="hidden" id="emailId" name="emailId" th:value="${obj.emailId}">
-				    <input type="hidden" id="serviceNumber" name="serviceNumber" th:value="${obj.serviceNumber}">
-				    <button>View</button>
-				    </form>
-				</td>
-                    <td>
-                    <form action="/customerConnection" method="get">                       
-                            <select id="connectionStatus" name="ConnectionStatus" required>
-                                <option value="" disabled selected>Select your Status</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Rejected">Rejected</option>                
-                            </select>
-                            <input type="hidden" name="serviceNumber" th:value="${obj.serviceNumber}">                     
-                            <button onclick="validateForm()" type="submit">Submit</button>
-                      </form>
-                    </td>
-                 
-                </tr>
-                <tr th:if="${#lists.isEmpty(list)}">
-                    <td colspan="8">No records found.</td>
-                </tr>
-            </tbody>
-        </table> -->
-        
-        
+    
         
         <h2>Customers applied for new Connection</h2> 
     <h4>Search:
     <input type="text" id="searchInput"></h4><br>
-    <div id="myGrid" style="height: 800px;"></div>
+    <div id="myGrid" style="height: 300px; width: 1100px;margin: auto;"></div>
     
     <div id="noRecordsMessage" style="display: none; text-align: center; margin-top: 20px;">
         No records found
@@ -301,19 +248,8 @@ h4 {
    
         
         
-<!-- <script type="text/javascript">
-function validateForm() {
-	var connectionStatus = document.getElementById("connectionStatus").value;
 
-	if (connectionStatus == "") {
-		alert("Please select a connection status");
-		return false;
-	}
 
-	return true;
-}
- -->
 
-</script>
 </body>
 </html>

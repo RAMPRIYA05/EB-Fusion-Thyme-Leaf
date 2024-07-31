@@ -10,7 +10,7 @@ public class Validation {
 
 	
 		public Boolean nameValidation(String name, Model model) {
-			String regex1 = "^[A-Za-z]+$";
+			String regex1 = "^(?=.*[A-Za-z].*[A-Za-z].*[A-Za-z])[A-Za-z\\\\s]+$";
 			Pattern p1 = Pattern.compile(regex1);
 			Matcher valid1 = p1.matcher(name);
 			Boolean ans1 = valid1.matches();
@@ -57,7 +57,7 @@ public class Validation {
 		}
 
 		public Boolean phoneNumberValidation(long phoneNumber, Model model) {
-			String regex4 = "[0-9]{10}";
+			String regex4 = "^[7-9]\\\\d{9}$";
 			String phonenumber=Long.toString(phoneNumber);
 			Pattern p4 = Pattern.compile(regex4);
 			
@@ -73,7 +73,7 @@ public class Validation {
 		}
 
 		public Boolean aadhaarNumberValidation(long aadhaarNumber, Model model) {
-			String regex5 = "^[2-9][0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$";
+			String regex5 = "^(?!0)\\d{4}\\s\\d{4}\\s\\d{4}$";
 			String aadhaarnumber=Long.toString(aadhaarNumber);
 			Pattern p5 = Pattern.compile(regex5);
 			Matcher valid5 = p5.matcher(aadhaarnumber);
@@ -85,6 +85,38 @@ public class Validation {
 				return false;
 			}
 			return ans5;
+			
+		}
+		
+
+		public Boolean accountNumberValidation(long accountNumber, Model model) {
+			String regex6 = "^\\d{9,18}$";
+			String accountnumber=Long.toString(accountNumber);
+			Pattern p6 = Pattern.compile(regex6);
+			Matcher valid6 = p6.matcher(accountnumber);
+			Boolean ans6 = valid6.matches();
+			if (Boolean.FALSE.equals(ans6)) {
+				
+				String errorMessage = accountnumber+" is a invalid account number use only 9-18 digit numbers";
+				model.addAttribute(errorMessage,model);
+				return false;
+			}
+			return ans6;
+			
+		}
+		
+		public Boolean ifscValidation(String ifsc, Model model) {
+			String regex7 = "^[A-Z]{4}0[A-Z\\\\d]{6}$";
+			Pattern p7 = Pattern.compile(regex7);
+			Matcher valid7 = p7.matcher(ifsc);
+			Boolean ans7 = valid7.matches();
+			if (Boolean.FALSE.equals(ans7)) {
+				
+				String errorMessage = ifsc+" is a invalid ifcs use only 11 digit numbers contains 4 capital alphabets,one zero,6 alphanumeric";
+				model.addAttribute(errorMessage,model);
+				return false;
+			}
+			return ans7;
 			
 		}
 

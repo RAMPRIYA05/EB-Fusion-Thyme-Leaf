@@ -66,7 +66,15 @@ public interface UserDAO {
 	public Bill findLatestBillByServiceNumber(long serviceNumber);
 	void canEnterBillUpdate(long serviceNumber);
 	
-	
+	int countUniqueServiceTypes();
+	int countCommercialServiceTypes();
+	public int countDomesticServiceTypes();
+	public int countPaidBills();
+	public int countUnPaidBills();
+	public int countRectifiedComplaints();
+	public int countPendingComplaints();
+	 public int countAppliedConnection();
+	public int countApprovedConnection();
 	
 	
 	

@@ -59,11 +59,11 @@ padding: 8px;
 </head>
 <body>
 <header>
-    <nav class="navbar-nav">
+    <nav class="navbar-nav" aria-label="Site Header Navigation">
         <img class="logo" src="assets/ebLogo.jpg" alt="Logo">
         <p>EB FUSION EB SERVICES AND ITS PAYMENT</p>
     </nav>
-    <nav class="navbar">
+    <nav class="navbar" aria-label="Main Navigation Menu">
         <ul> 
             <li><a th:href="@{/AdminWelcomePage}">Home</a></li>
             <li><a th:href="@{/AdminAbout}">About Us</a></li>
@@ -96,45 +96,6 @@ padding: 8px;
     </nav>
 </header>
 
-<!-- <h2>Customer Bill Details</h2>
-<form action="searchUnpaidBills" method="get"> 
-    <h4>Search: <input type="search" placeholder="Enter your Search EmailId" name="emailId" id="emailId" required>
-    <button type="submit">Search</button></h4>
-</form><br>
-
-<table>
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Email Id</th>
-            <th scope="col">Service Number</th>
-            <th scope="col">Address</th>
-            <th scope="col">Reading Units</th>
-            <th scope="col">Reading Taken Date</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Service Type</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Bill Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="bill : ${list}">
-            <td th:text="${bill.id}"></td>
-            <td th:text="${bill.emailId}"></td>
-            <td th:text="${bill.serviceNumber}"></td>
-            <td th:text="${bill.address}"></td>
-            <td th:text="${bill.readingUnits}"></td>
-            <td th:text="${bill.readingTakenDate}"></td>
-            <td th:text="${bill.dueDate}"></td>
-            <td th:text="${bill.serviceType}"></td>
-            <td th:text="${bill.amount}"></td>
-            <td th:text="${bill.billStatus}"></td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(list)}">
-            <td colspan="10">No records found.</td>
-        </tr>
-    </tbody>
-</table> -->
 
 
 <h2>Customer Bill Details</h2>

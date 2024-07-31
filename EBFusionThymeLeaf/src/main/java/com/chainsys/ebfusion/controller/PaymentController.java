@@ -1,5 +1,4 @@
 package com.chainsys.ebfusion.controller;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import com.chainsys.ebfusion.dao.UserDAO;
 
 import com.chainsys.ebfusion.model.Payment;
 import com.chainsys.ebfusion.service.PaymentService;
+import com.chainsys.ebfusion.validation.Validation;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -22,7 +22,9 @@ public class PaymentController {
 	@Autowired
 	UserDAO userDAO;
 	JdbcTemplate jdbcTemplate;
-	public static int paymentId;
+	@Autowired
+	Validation validate;
+
      @Autowired
      PaymentService  paymentService;
 	@PostMapping("/payBill")
@@ -41,18 +43,21 @@ public class PaymentController {
 		payment.setTotalAmount(totalAmount);
 		payment.setPayedAmount(payedAmount);
         payment.setIfsc(ifsc);
-        
+        if(Boolean.FALSE.equals(validate.accountNumberValidation(accountNumber, model)) || Boolean.FALSE.equals(validate.ifscValidation(ifsc, model))) {
         paymentService.processPayment(payment, serviceNumber);
 		String email = (String) session.getAttribute("UserEmailId");	 
 		 paymentService.checkPayment(email,serviceNumber,paymentDate,amount,model);
 		 model.addAttribute("readingTakenDate", readingTakenDate);
 		return "viewPaidBill";
 	}
-
+	else {
+		return "paymentForm";
+	}
+	}
 	@GetMapping("/viewPaidStatus")
 	public String viewPaidStatus(Model model, HttpSession session,String readingTakenDate) {
 		String email = (String) session.getAttribute("UserEmailId");
-		Payment payment = new Payment();
+	
 		paymentService.checkPaymentAll(model, email);
 		model.addAttribute("readingTakenDate", readingTakenDate);
 		return "paymentHistory";
